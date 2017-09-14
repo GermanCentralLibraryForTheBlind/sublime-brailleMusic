@@ -1,0 +1,88 @@
+%YAML 1.2
+---
+# See http://www.sublimetext.com/docs/3/syntax.html
+file_extensions:
+  - txt
+  - out
+scope: source.braille
+
+contexts:
+  # The prototype context is prepended to all contexts but those setting
+  # meta_include_prototype: false.
+  prototype:
+    - include: comments
+
+  main:
+    # The main context is the initial starting point of our syntax.
+    # Include other contexts from here (or specify them directly).
+    - include: staff
+    - include: lyrics
+    - include: title
+    # - include: numbers
+    - include: directive
+
+  staff:
+    # Note that blackslashes don't need to be escaped within single quoted
+    # strings in YAML. When using single quoted strings, only single quotes
+    # need to be escaped: this is done by using two single quotes next to each
+    # other.
+    - match: ^\s+('\.|_`|\$\`)
+      scope: keyword.control.braille
+      push: inside_staff
+  
+  inside_staff:
+    - meta_include_prototype: false
+    - meta_scope: constant.language.braille
+    #- match: '\.'
+    #  scope: constant.character.escape.braille
+    - match: (?=^\s\s)
+      scope: constant.language.end.braille
+      pop: true
+    - match: (?=[^\s]) #((?:^[^\s]*)(?=\s))|((?:\s)(?=[^\s]*))
+      scope: constant.character.braille
+      push: measure
+
+
+  measure:
+    - meta_scope: punctuation.definition.comment.braille
+    - match: \s
+      scope: constant.character.end.braille
+      pop: true
+
+  numbers:
+    - match: '#[a-j]'
+      scope: constant.numeric.braille
+  
+  directive:
+    - match: '(.*)\s+#[a-j][,;:/?+=*)]'
+      scope: variable.parameter.braille
+  
+  title:
+    - match: (::::::)
+    #\s+.*
+      scope: punctuation.definition.comment.braille
+
+  lyrics:
+    # lyrics start with lyrics prefix
+    - match: '\s\s<;'
+      scope: keyword.control..braille
+      push: inside_lyrics
+
+  inside_lyrics:
+    # - meta_include_prototype: false
+    - meta_scope: string.quoted.double.braille
+    #- match: '\.'
+    #  scope: constant.character.escape.braille
+    - match: ^\s\s(?!#)
+      scope: punctuation.definition.string.end.braille
+      pop: true
+
+  comments:
+    # Comments begin with a '//' and finish at the end of the line.
+    - match: '//'
+      scope: punctuation.definition.comment.braille
+      push:
+        # This is an anonymous context push for brevity.
+        - meta_scope: comment.line.double-slash.braille
+        - match: $\n?
+          pop: true

@@ -1,0 +1,11 @@
+[
+    {
+        "caption": "Braille Überschrift",
+        "command": "ueberschrift"
+    },
+    {
+        "caption": "Braille Zentrieren",
+        "command": "zentriere"
+    }
+       
+]

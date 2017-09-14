@@ -1,0 +1,8 @@
+[
+     { "keys": ["f1"], "command": "goto_documentation" }, 
+     { "keys": ["ctrl+u"], "command": "ueberschrift" }, 
+	 { "keys": ["ctrl+alt+u"], "command": "ueberschrift" }, 
+    { "keys": ["ctrl+-"], "command": "toggle_comment", "args": { "block": false } },
+    { "keys": ["ctrl+Shift+-"], "command": "toggle_comment", "args": { "block": true } },
+    { "keys": ["ctrl+f1"], "command": "show_panel", "args": {"panel": "console", "toggle": true} } 
+]

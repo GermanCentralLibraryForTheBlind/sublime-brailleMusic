@@ -1,0 +1,4 @@
+[
+    {"keys": ["ctrl+alt+u"], "command": "ueberschrift"},
+    {"keys": ["ctrl+alt+c"], "command": "zentriere"}
+]
