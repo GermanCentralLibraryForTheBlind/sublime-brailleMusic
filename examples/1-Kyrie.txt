@@ -1,0 +1,71 @@
+      wolfgang amadeus mozart
+            missa in >c
+          (kr9nungs-messe)
+              >kv #cag
+               ======
+
+               kyrie
+              :::::::
+      andante maestoso  $c
+    #a #,-=.
+  soprano '.`tutti`f$d.`p$ydxu
+`f$e.`p$zexu `f$f.`p$&fxu `f$7.g26.f
+5.e5v m !: u!
+  alto '.`f!f.`tutti`p!&fxu
+`f!g.`p!%gxu `f!h.`p!{hxu `f!7.g8.h
+9.i8v m !: u!
+  tenore '.`tutti`f_h.`p_{hxu `f.=
+`f!d.`p!ydxu `f!4.d= 4.dwv m !: u!
+  basso '.`tutti`f_d.`p_ydxu
+`f>j.`p>}jxu `f.2>j.`p>}jxu
+`f.2>9.2_i8.h 37.g8v m !: u!
+  <;*kyrie,*#c eleison.
+      pi}  andante
+    #b #=.-;)
+  s. '.`solo$6.%.co dc!hc$de6.%.co
+dxv6.f 6"c&c%zc}9.bc!?ycj 9vu m
+u9.$%cz !?dcw!?zcdc}c~hb7f fbevu !:
+2$6.c<b%.co>;dc!hc$de 16.%.codxv m
+u4.d !?zcdc}c~!?}cic{c%6+5
+  <;kyrie eleison. *kyrie e(lei)-
+son.*, e(lei)son. christe eleison.
+kyrie elei-
+  a. '.u #hm !: #em
+  t. '.u mmm u`solo!5.e 5"czc&yc~!
+8.bc!?}ci 8vu m u2!6.c<b%.co>; !:
+dc_hc!de26.%.co dxv16.f 6"c&zc&c%!
+<b4.!?&ce>; 4vu m
+  <;kyrie e(lei)son. christe elei-
+son. kyrie eleison.
+  b. '.u #hm !: #em
+      maestoso come prima
+    #c #;,-:,
+  s. '.`tutti`f$d."ca`p$ydx!
+x`f!{.rhh2`!4v>2,u `fp$hbcggx!
+x`f!{.rhh !: `fp$gbcffxx`f${.rfd
+7.g72f.& 5.e= 4vu v`p!i.~h.{hbcg 6vu
+vg.%f.&fbce 4vu m2k2l !:
+  <;son. *kyrie e(lei)son.*. *kyrie
+eleison.*, *kyrie e(lei)son,*.
+  kyrie
+  a. '.`tutti`f!f.`p!&fxx`f!&.pff
+`fp!8bhxx`f!%.qge !: `fp!8bhx!
+x`f!&.phf 7.g8i.~ eer8 8vu v`p!g.%!
+f.&ebcj 4vu ve.zd.ydbcj 4vu m2k2l !:
+  <;kyrie, *kyrie e(lei)son.*. *ky-
+rie eleison.*, *kyrie e(lei)son,*.
+  t. '.`tutti`f_h.`p_{hxx`f_{.rh!d
+`fp!5bexx`f!z.oeg !: `fp!4bdx!
+x`f!y.ndd 4.dwd.y 4cjiw.j 4vu
+v`p!d.yd.yjbch 8vu vi.~h.{hbcg 6vu
+m2k2l !:
+  <;kyrie, *kyrie e(lei)son.*. kyrie
+eleison. kyrieeleison, *kyrie e-
+(lei)son,*.
+  b. '.`tutti`f_d.`p_ydxx`f_y.ndd
+`fp>wbjxx`f>}.tjj !: `fp.2>wbjx!
+x`f.2_}.tjj 29.i83g.% 8.h= 4vu
+v`p.1_g.%h>h8b _4vu vg.%h>h8b _4vu
+m2k2l !:
+  <;kyrie, *kyrie e(lei)son.*. *ky-
+rie eleison.*, *kyrie e(lei)son,*.

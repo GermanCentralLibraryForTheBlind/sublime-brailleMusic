@@ -2,8 +2,9 @@ import sublime
 import sublime_plugin
 
 def plugin_loaded():
-    settings = sublime.load_settings('Braille.sublime-settings')
-    sublime.window.view.settings().set('tab_size', settings.get('tab_size'))
+    pass
+    # settings = sublime.load_settings('Braille.sublime-settings')
+    # sublime.window.view.settings().set('tab_size', settings.get('tab_size'))
 
 class AlignCommand():
     @property

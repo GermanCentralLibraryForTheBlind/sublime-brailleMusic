@@ -5,6 +5,22 @@ file_extensions:
   - txt
   - out
 scope: text.braille
+variables:
+  numbers: ([a-j])
+  lower_numbers: ([,;:/?+=*)])
+  staff_prefixes : ('\.|_`|\$\`)
+  octaves : (""|"(?!c)|>|_|!|\$|\<|'|'')
+  # Notes
+  eigth_128 : d|e|f|h|i|j
+  quarter_64 : 4|5|6|7|8|9|w
+  half_32 : n|o|p|q|r|s|t
+  whole_16: y|z|&|%|\{|~|\}
+
+  notes: '{{eigth_128}}|{{quarter_64}}|{{half_32}}|{{whole_16}}|'
+  rests: x|v|u|m
+  fingers: a|b|l|,|k
+
+  dynamics: (p{1,3}|f{1,3}|fp|mp|mf|sf|fz|sfz)
 
 contexts:
   # The prototype context is prepended to all contexts but those setting
@@ -26,15 +42,18 @@ contexts:
     # strings in YAML. When using single quoted strings, only single quotes
     # need to be escaped: this is done by using two single quotes next to each
     # other.
-    - match: ^\s+('\.|_`|\$\`)
+    - match: '\s*(.*)\s*{{staff_prefixes}}'
       scope: keyword.control.braille
+      captures:
+        1: storage.modifier #Instrumentname 
       push: inside_staff
   
   inside_staff:
     # - meta_include_prototype: false
     - meta_scope: constant.language.braille
-    - match: ^\.
+    - match: ^\.   # . if char after music prefix contains points1-3
       scope: punctuation.definition.comment.braille
+    
     - match: (?=\S) #((?:^[^\s]*)(?=\s))|((?:\s)(?=[^\s]*))
       # scope: constant.character.braille
       push: measure
@@ -46,14 +65,26 @@ contexts:
 
   measure:
     # - meta_scope: punctuation.definition.comment.braille
-    - match: '""|"(?!c)|>|_|!|\$|\<|''|'''''
+    - match: '{{octaves}}'
       scope: constant.character.braille
+    - match: '\s(2=)|2;|2k'                 #barline/repeats
+      scope: punctuation.definition.comment.braille   
+    - match: '(?<!`)({{notes}})({{fingers}})?'
+      captures: 
+        1: entity.braille
+        2: variable.parameter.braille
+    - match: '{{rests}}'
+      scope: entity.other.braille    
+    - match: '`{{dynamics}}'
+      scope: punctuation.braille
+    - match: (`.+?(?!{{dynamics}})(?={{octaves}}|[.`]))
+      scope: punctuation.braille   
     - match: \s
       scope: constant.character.end.braille
       pop: true
 
   numbers:
-    - match: '#[a-j]'
+    - match: '#{{numbers}}'
       scope: constant.numeric.braille
   
   directive:
@@ -61,7 +92,7 @@ contexts:
       scope: variable.parameter.braille
   
   title:
-    - match: (::::::)
+    - match: (:{6,7}|={6,7})
     #\s+.*
       scope: punctuation.definition.comment.braille
 
