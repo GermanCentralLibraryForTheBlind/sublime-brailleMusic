@@ -74,7 +74,7 @@ contexts:
         1: entity.braille
         2: variable.parameter.braille
     - match: '{{rests}}'
-      scope: entity.other.braille    
+      scope: entity.name.tag.braille    
     - match: '`{{dynamics}}'
       scope: punctuation.braille
     - match: (`.+?(?!{{dynamics}})(?={{octaves}}|[.`]))
