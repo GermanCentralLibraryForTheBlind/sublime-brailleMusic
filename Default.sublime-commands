@@ -1,11 +1,19 @@
 [
     {
         "caption": "Braille Überschrift",
-        "command": "ueberschrift"
+        "command": "braille_headline"
     },
     {
         "caption": "Braille Zentrieren",
-        "command": "zentriere"
+        "command": "braille_center"
+    },
+    {
+        "caption": "Braille Rechtsbündig",
+        "command": "braille_right_align"
+    },
+    {
+        "caption": "Braille Linksbündig",
+        "command": "braille_left_align"
     }
        
 ]

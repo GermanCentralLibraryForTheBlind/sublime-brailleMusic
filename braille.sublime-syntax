@@ -4,13 +4,13 @@
 file_extensions:
   - txt
   - out
-scope: source.braille
+scope: text.braille
 
 contexts:
   # The prototype context is prepended to all contexts but those setting
   # meta_include_prototype: false.
   prototype:
-    - include: comments
+    - include: numbers
 
   main:
     # The main context is the initial starting point of our syntax.
@@ -31,20 +31,23 @@ contexts:
       push: inside_staff
   
   inside_staff:
-    - meta_include_prototype: false
+    # - meta_include_prototype: false
     - meta_scope: constant.language.braille
-    #- match: '\.'
-    #  scope: constant.character.escape.braille
+    - match: ^\.
+      scope: punctuation.definition.comment.braille
+    - match: (?=\S) #((?:^[^\s]*)(?=\s))|((?:\s)(?=[^\s]*))
+      # scope: constant.character.braille
+      push: measure
+    # exit staff
     - match: (?=^\s\s)
       scope: constant.language.end.braille
       pop: true
-    - match: (?=[^\s]) #((?:^[^\s]*)(?=\s))|((?:\s)(?=[^\s]*))
-      scope: constant.character.braille
-      push: measure
 
 
   measure:
-    - meta_scope: punctuation.definition.comment.braille
+    # - meta_scope: punctuation.definition.comment.braille
+    - match: '""|"(?!c)|>|_|!|\$|\<|''|'''''
+      scope: constant.character.braille
     - match: \s
       scope: constant.character.end.braille
       pop: true
