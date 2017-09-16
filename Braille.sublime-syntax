@@ -6,27 +6,41 @@ file_extensions:
   - out
 scope: text.braille
 variables:
-  numbers: ([a-j])
-  lower_numbers: ([,;:/\?\+=\(\*\)])
+  ## Allgemeine Braille- Zeichen
+  digit: '[a-j]'
+  lower_digit: '[,;:/\?\+=\(\*\)]'
+  number: '#{{digit}}+'
+  lower_number: '#{{lower_digit}}+'
+  bracket: '''='
+  
+  # section: '{{number}}\s+#{{lower_digit}}\-#{{lower_digit}}+'
+ 
   staff_prefixes : ('\.|_`|\$\`)
-  #Ornamente
+  ## Ornamente
   mordents: '!\+l|<+L'
   trills: '!?\+|<?\+'
   ornaments: '{{mordents}}|{{trills}}|''/l?|!?\?'   
+  value_diff: '''2,|>2,' #Wertscheidungs- oder Gruppierungszeichen
   octaves : '"(?!c)|>|_|!|\$|\<|'''
   accidentals: '''?3{1,2}|2{1,2}|1'
-  # Notes
-  eigth_128 : d|e|f|g|h|i|j
-  quarter_64 : 4|5|6|7|8|9|w
-  half_32 : n|o|p|q|r|s|t
-  whole_16: y|z|&|%|\{|~|\}
+  ## Notes ################################
+  eigth_128 : '[defghij]'
+  quarter_64 : '[456789w]'
+  half_32 : '[nopqrst]'
+  whole_16: '[yz&%\{~\}]'
 
-  value_diff: '''2,|>2,' #Wertscheidungszeichen
   notes: '{{eigth_128}}|{{quarter_64}}|{{half_32}}|{{whole_16}}|'
-  rests: x|v|u|m
-  fingers: a|b|l|,|k
+  rests: '[xvum]'
+  ####################
 
-  dynamics: (sfz|fp|mp|mf|sf|fz|p{1,3}|f{1,3})
+  fingers: a|b|l|,|k
+  intervals: '[\\0#*):-]'
+  bows_before: <b
+  bows_after: '>;|cc|"c|c'
+  # abs. dynamics + cresc./decresc.
+  dynamics: (sfz|fp|mp|mf|sf|fz|p{1,3}|f{1,3}|c(?!on|res|ord)|d)
+  # (de)cresc. Winkel
+  cresc: '`[cd:/]'
 
 contexts:
   # The prototype context is prepended to all contexts but those setting
@@ -35,13 +49,18 @@ contexts:
     - include: numbers
 
   main:
+    # - meta_include_prototype: false
+
     # The main context is the initial starting point of our syntax.
     # Include other contexts from here (or specify them directly).
+
+    - include: quoted
     - include: staff
     - include: lyrics
     - include: title
-    # - include: numbers
+    - include: section
     - include: directive
+
 
   staff:
     # Note that blackslashes don't need to be escaped within single quoted
@@ -55,7 +74,7 @@ contexts:
       push: inside_staff
   
   inside_staff:
-    # - meta_include_prototype: false
+    - meta_include_prototype: true
     - meta_scope: constant.language.braille
     - match: ^\.   # . if char after music prefix contains points1-3
       scope: punctuation.definition.comment.braille
@@ -85,43 +104,62 @@ contexts:
     - match: '\s(2=)|2;|2k|2l|2k\.!?'                 #barline/repeats
       scope: punctuation.definition.comment.braille   
     # notes incl. prefix (accid.), postfix (finger)... TODO
-    - match: '(?<!`)({{ornaments}})?({{accidentals}})?({{octaves}})?({{notes}})\.?({{fingers}})?'
+    - match: '(?<!`)({{bows_before}})?({{ornaments}})?({{accidentals}})?({{octaves}})?({{notes}})\.?({{fingers}})?({{bows_after}})?({{intervals}}+)?'
       scope: entity.braille
       captures: 
-        1: invalid.deprecated
-        2: storage.modifier
-        3: support.other.variable
-        4: entity.braille
-        5: variable.parameter.braille
+        1: punctuation.definition.comment.braille
+        2: invalid.deprecated
+        3: storage.modifier
+        4: support.other.variable
+        5: entity.braille
+        6: variable.parameter.braille
+        7: punctuation.definition.comment.braille
+        8: markup.inserted.braille
     - match: '{{rests}}'
       scope: entity.name.tag.braille    
-    - match: '`{{dynamics}}'
+    - match: '`({{bracket}})?{{dynamics}}({{bracket}})?'
       scope: punctuation.braille
     # directive texts  
-    - match: (`.+?(?!{{dynamics}})(?={{octaves}}|[.`]))
-      scope: punctuation.braille   
+    - match: '`({{bracket}})?' #(`.+?(?!{{dynamics}}))
+      scope: string.quoted.double.braille
+      push: word   #mehrzeilig möglich
     # measure end condition = whitespace or newline 
     - match: \s
       scope: constant.character.end.braille
       pop: true
+  
+  #Wortzeichen
+  word:
+    - meta_scope: string.quoted.double.braille
+    - match: '({{bracket}})?(?={{octaves}}|[\.`])'
+      # scope: constant.language.end.braille
+      pop: true
 
   numbers:
-    - match: '#[{{numbers}}|{{lower_numbers}}]{1,2}'
+    - match: '#{{digit}}+'
       scope: constant.numeric.braille
-  
+
+  quoted:
+    - match: '''\..*''\.'
+      scope: punctuation.definition.comment.braille
+
   directive:
     - match: '(.*)\s+#[a-j][,;:/?+=*)]'
       scope: variable.parameter.braille
-  
+  section:
+    - meta_include_prototype: true
+    - match: '#{{lower_digit}}+\-{{lower_digit}}+'
+      scope: meta.diff.header 
   title:
+    - meta_include_prototype: true
     # match underlines only (?)
-    - match: '\(?\>?\$?[a-z0-9`,~''\}\*\-\$]+\)?\s' #(:{6,7}|={6,7})
+    - match: '\(?\>?\$?[a-z0-9`,~''"\}\*\-\$]+\)?\s' #(:{6,7}|={6,7})
       scope: punctuation.definition.comment.braille
 
   lyrics:
     # lyrics start with lyrics prefix
     - match: '\s\s<;'
-      scope: keyword.control..braille
+      scope: keyword.control.braille
       push: inside_lyrics
 
   inside_lyrics:
@@ -132,12 +170,12 @@ contexts:
       scope: punctuation.definition.string.end.braille
       pop: true
 
-  comments:
-    # Comments begin with a '//' and finish at the end of the line.
-    - match: '//'
-      scope: punctuation.definition.comment.braille
-      push:
-        # This is an anonymous context push for brevity.
-        - meta_scope: comment.line.double-slash.braille
-        - match: $\n?
-          pop: true
+  # comments:
+  #   # Comments begin with a '//' and finish at the end of the line.
+  #   - match: '//'
+  #     scope: punctuation.definition.comment.braille
+  #     push:
+  #       # This is an anonymous context push for brevity.
+  #       - meta_scope: comment.line.double-slash.braille
+  #       - match: $\n?
+  #         pop: true

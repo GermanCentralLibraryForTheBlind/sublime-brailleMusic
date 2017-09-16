@@ -1,0 +1,80 @@
+ #; pr"elude inoffensif
+        p"e4"e de v0illesse
+              :::::::
+    andantino  #ab(
+  #a #,-? $`.`pp`'=legatissimo'=!
+_4.ccjd_i8.c!dxx _6.cch>jd5.c>hxx
+`c$4.c)-jc)ic)d*-`f`d$6.c-d-xx
+`pp.(!i)xxvx(_j0#xxvx m
+  _`.2c>4.12cjd>i12c8._d1cxx
+2c>6.12ch"jd12c5."h1cxx
+2c>9.*-12c_f3012cg0g202c4.c1*d01cxx
+(3>g2:xxvx"h-xxvx 2c>d((_d0*b1cf0)a!
+h#)af0)a(d0*b2c=
+    dolce
+  #b #+-,; $`$6.cc5f7.c!9. 4."c!
+4tccdidc!8xv$fc `c$7cfc3!8$fc`f$9cf!
+fcecd t.c9.c18. $6.cc5f7.c<(2!9.
+4."cd"cnhccfdtad,ibcd!8axxx.($&
+$(3!8.c9"c~.($p$(3!9c}.(o$(3!7c{.($r
+!:
+  _`.2c>d_d0*f0)12ch#)f0)d0*!
+2c>d_d#)g0*12ci0)g0*d#) 2c>d_d0*f0)!
+h#)f0)d0*2c>d_f0)h#)!d0*_h#)f0)
+2c"j>j#3)_f0*j0#f0*>j#)2c"i_f#)i0*!
+d0)i0*f#) 2c>f_f30*h0)j#'.3'.)!
+h0)f0*12c3>g3_e30)_j30'.3'.*!
+12c>h1_e10)h01*'.1'.: 2c>d_d0*f0)!
+h#)f0)f0)2c>d_d#2)g0*12ci0)g0*d#)
+2c>d_d0*f0)h#)f0)d0*2c>f_f0)h#)!
+12c!d0*_h#)f0) 2c>g_d#g*12c!d#_g*d#!
+2c>h_g)!e02c>h_e)_j0'.1'.*
+  #c #,:-,( $`$4x`'=pp'=`leggero!
+((<{00--{=={ihgfg{{== {~{%(&0-m!
+`f`d<8.! `'=con crescente
+espress.'=` $h`/!fccgh$fce +4j!
+`'=pp'=.((<~00--~==~jihgh~~==
+~}~{(%0-m`f`d<9.$i`/!jccdegcf +5d!
+`pp '=sempre leggero'=` <{00--{==!
+{ihgfg{{== {~{%&30-m`f`d.2<w.2$j`/!
+3$dcce&3!hidfci2k
+  _`.2c>d`una`corda!d0j|#!
+2j|#i0*2i0*h#)12c!d01j|#2j|#1i0*2i0*
+2c>d_d0*f0)`tre`corde_h#)f0)d0*!
+2c>d_d0*f0)h#)f0)d0* 2c>e`una`corda!
+!e0d|#j0*2j0*i#)h*:12c!e0d|#!
+1j0*2j0*i#) 2c"h_e0)g#)`tre`corde!
+_j0*g#)e0)2c"h_e0)g#)j0*g#)e0)
+2c>d!f0e|#d0*j#)d0*12c2"j!f0e|#!
+d0*1j#)2j#) 2c"i_f03)h#)!d0*_h#)f0)!
+2c"i_f0)h#)12c!d0*_h#)f0)1c2k
+
+'.cc'. beginn langer bindebogen
+'.c'. bindebogenende
+'.c'. bindebogen
+'.)'. sext =intervall=
+'.-'. oktave =intervall=
+'.*'. quint =intervall=
+'.('. }accato =ab}o~en=
+'.0'. terz =intervall=
+'.#'. quart =intervall=
+'.2c'. pedal =ern2t= treten
+'.12c'. pedal kurz loslassen und
+  w0der treten
+'.1c'. pedal loslassen
+'.:'. septime =intervall=
+'.(('. folgend }accato =ab}o~en=
+'.b'. z3gefinger =fingersatz=
+'.a'. d1men =fingersatz=
+'.='. takt oder t3l 3nes taktes
+  w0derholen
+'.<('. martellato =h`mmernd=
+'.,'. ringfinger =fingersatz=
+'.$('. akzent =betont=
+'.!:'. z34en f8r 5warzdrucks3ten-
+  we4sel
+'.00'. folgend terzen =intervall=
+'.--'. folgend oktaven =intervall=
+'.+'. triller =verz0rung=
+'.2k'. 5lussz34en
+'.|'. sekunde =intervall=
