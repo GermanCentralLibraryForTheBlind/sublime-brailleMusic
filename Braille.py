@@ -53,8 +53,10 @@ class BrailleRightAlignCommand(sublime_plugin.TextCommand, AlignCommand):
         Überschrift zentrieren und mit '::::::' unterstreichen
     """
     def run(self, edit):
-        new_line = self.right_align_current_line()
-        self.view.replace(edit, self.cur_line_region, new_line)        
+        self.view.replace(
+            edit, self.cur_line_region, 
+            self.right_align_current_line()
+            )        
 
 class BrailleLeftAlignCommand(sublime_plugin.TextCommand, AlignCommand):
     """

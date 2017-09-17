@@ -7,13 +7,17 @@ file_extensions:
 scope: text.braille
 variables:
   ## Allgemeine Braille- Zeichen
+  # Buchstaben ohne nationale Besonderheiten ("western")
+  char_western: '[a-z]'
+  # deutsche Vollschriftzeichen (+Umlaute ß au eu äu st sch)
+  char_de: '{{char_western}}|[0-5~`98|}]'
+  # andere Zeichen mit Punkten 1-3
+  other123: '[6\+\?\(\)&7#\*,;/={]'
   digit: '[a-j]'
   lower_digit: '[,;:/\?\+=\(\*\)]'
   number: '#{{digit}}+'
   lower_number: '#{{lower_digit}}+'
-  bracket: '''='
-  
-  # section: '{{number}}\s+#{{lower_digit}}\-#{{lower_digit}}+'
+  bracket: '''=' #eckige Klammer 
  
   staff_prefixes : ('\.|_`|\$\`)
   ## Ornamente
@@ -23,22 +27,23 @@ variables:
   value_diff: '''2,|>2,' #Wertscheidungs- oder Gruppierungszeichen
   octaves : '"(?!c)|>|_|!|\$|\<|'''
   accidentals: '''?3{1,2}|2{1,2}|1'
-  ## Notes ################################
+  ## Notes + Rests ################################
   eigth_128 : '[defghij]'
   quarter_64 : '[456789w]'
   half_32 : '[nopqrst]'
   whole_16: '[yz&%\{~\}]'
-
+  # All together
   notes: '{{eigth_128}}|{{quarter_64}}|{{half_32}}|{{whole_16}}|'
   rests: '[xvum]'
   ####################
 
   fingers: a|b|l|,|k
-  intervals: '[\\0#*):-]'
+  intervals: '[|0#*):-]'
   bows_before: <b
   bows_after: '>;|cc|"c|c'
   # abs. dynamics + cresc./decresc.
-  dynamics: (sfz|fp|mp|mf|sf|fz|p{1,3}|f{1,3}|c(?!on|res|ord)|d)
+  # Es dürfen keine Zeichen folgen, welche die Punkte 1-3 enthalten (Punkt 3 davor)
+  dynamics: (sfz|fp|mp|mf|sf|fz|p{1,3}|f{1,3}|c|d)(?!{{char_de}}-'`'|{{other123}})
   # (de)cresc. Winkel
   cresc: '`[cd:/]'
 
@@ -47,9 +52,10 @@ contexts:
   # meta_include_prototype: false.
   prototype:
     - include: numbers
+    - match: '{{lower_number}}'
 
   main:
-    # - meta_include_prototype: false
+    - meta_include_prototype: false
 
     # The main context is the initial starting point of our syntax.
     # Include other contexts from here (or specify them directly).
@@ -57,8 +63,8 @@ contexts:
     - include: quoted
     - include: staff
     - include: lyrics
-    - include: title
     - include: section
+    - include: title
     - include: directive
 
 
@@ -103,7 +109,8 @@ contexts:
     # barlines
     - match: '\s(2=)|2;|2k|2l|2k\.!?'                 #barline/repeats
       scope: punctuation.definition.comment.braille   
-    # notes incl. prefix (accid.), postfix (finger)... TODO
+    # notes incl. prefix (accid., bow_start, ornaments),
+    # postfix (finger, slurs, intervals)... TODO
     - match: '(?<!`)({{bows_before}})?({{ornaments}})?({{accidentals}})?({{octaves}})?({{notes}})\.?({{fingers}})?({{bows_after}})?({{intervals}}+)?'
       scope: entity.braille
       captures: 
@@ -147,13 +154,13 @@ contexts:
     - match: '(.*)\s+#[a-j][,;:/?+=*)]'
       scope: variable.parameter.braille
   section:
-    - meta_include_prototype: true
-    - match: '#{{lower_digit}}+\-{{lower_digit}}+'
+    - meta_include_prototype: false
+    - match: '#{{lower_digit}}+\.?\-{{lower_digit}}+\.?'
       scope: meta.diff.header 
   title:
     - meta_include_prototype: true
     # match underlines only (?)
-    - match: '\(?\>?\$?[a-z0-9`,~''"\}\*\-\$]+\)?\s' #(:{6,7}|={6,7})
+    - match: '({{char_de}}|{{other123}})+' #'\(?\>?\$?[a-z0-9`,~''"\}\*\-\$]+\)?\s' #(:{6,7}|={6,7})
       scope: punctuation.definition.comment.braille
 
   lyrics:
