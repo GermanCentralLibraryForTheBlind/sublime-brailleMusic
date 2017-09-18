@@ -6,7 +6,7 @@ def plugin_loaded():
     # settings = sublime.load_settings('Braille.sublime-settings')
     # sublime.window.view.settings().set('tab_size', settings.get('tab_size'))
 
-class AlignCommand():
+class AlignCommand(object):
     @property
     def cursor(self):
         return self.view.sel()[0]
@@ -75,13 +75,15 @@ class BrailleStatus(sublime_plugin.EventListener, AlignCommand):
     def on_selection_modified(self, view):
         cursor = view.sel()[0]
         scope_name = view.scope_name(cursor.b).strip()
-        scope_list = scope_name.split(' ')
-        if (scope_list and (scope_list[0] == 'text.braille')):
-            
+        self.scope_list = scope_name.split(' ')
+        if (self.scope_list and (self.scope_list[0] == 'text.braille')):
+            showed_scope = self.scope_list[-1]
+            if len(self.scope_list)>2 and self.scope_list[-2].endswith('braille') and self.scope_list[-2]!=showed_scope:
+                showed_scope = self.scope_list[-2] + ' ' + showed_scope
             current_scope_content = view.extract_scope(cursor.b)
             view.set_status(
                 'current_scope_content', 
-                scope_list[-1]+' '+view.substr(current_scope_content)+' '
+                showed_scope+' '+view.substr(current_scope_content)+' '
                 )
 
     
