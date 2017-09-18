@@ -25,7 +25,7 @@ variables:
   fermate: "2l"
   
   bar_end: "2k|2k."
-  repeat_start: '\s(2=)'
+  repeat_start: '2='
   repeat_end: '2;'
   staff_prefixes : ('\.|_`|\$\`)
   ## Ornamente
@@ -34,7 +34,7 @@ variables:
   ornaments: '{{mordents}}|{{trills}}|''/l?|!?\?'   
   value_diff: '''2,|>2,' #Wertscheidungs- oder Gruppierungszeichen
   octaves : '"(?!c)|>|_|\!|\$|\<|'''
-  accidentals: '''?3{1,2}|2{1,2}|1'
+  accidentals: '3{1,2}|2{1,2}|1'
   ## Notes + Rests ################################
   eigth_128 : '[defghij]'
   quarter_64 : '[456789w]'
@@ -81,6 +81,7 @@ contexts:
 
 
   staff:
+    - meta_include_prototype: false
     # Note that blackslashes don't need to be escaped within single quoted
     # strings in YAML. When using single quoted strings, only single quotes
     # need to be escaped: this is done by using two single quotes next to each
@@ -93,7 +94,7 @@ contexts:
   
   inside_staff: 
     # - meta_scope: keyword.control.braille 
-    # - meta_include_prototype: true
+    - meta_include_prototype: false
     #- scope: constant.language.braille
     - match: ^\.   # . if char after music prefix contains points1-3
       scope: comment.escape.braille
@@ -128,7 +129,7 @@ contexts:
         3: comment.measure.fermate.braille   
     # notes incl. prefix (accid., bow_start, ornaments),
     # postfix (finger, slurs, intervals)... TODO(?<!`)
-    - match: '({{value_diff}})?({{phrase_start}})?({{ornaments}})?({{pedal_on}})?({{accidentals}})?({{octaves}})?({{notes}})(\.{,2})({{fingers}})?({{bows_after}})?({{intervals}}+)?({{pedal_off}})?'
+    - match: '({{value_diff}})?({{phrase_start}})?({{ornaments}})?({{pedal_on}})?''?({{accidentals}})?({{octaves}})?({{notes}})(\.{,2})({{fingers}})?({{bows_after}})?({{intervals}}+)?({{pedal_off}})?'
 
       scope: entity.note.braille
       captures: 
