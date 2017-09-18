@@ -8,9 +8,13 @@ def plugin_loaded():
 
 class AlignCommand():
     @property
+    def cursor(self):
+        return self.view.sel()[0]
+    
+    @property
     def cur_line_region(self):
         """get line region at (first cursor)"""
-        return self.view.line(self.view.sel()[0])
+        return self.view.line(self.cursor)
 
     @property 
     def cur_line(self):
@@ -67,3 +71,17 @@ class BrailleLeftAlignCommand(sublime_plugin.TextCommand, AlignCommand):
         self.view.replace(edit, self.cur_line_region, new_line)                
 
 
+class BrailleStatus(sublime_plugin.EventListener, AlignCommand):
+    def on_selection_modified(self, view):
+        cursor = view.sel()[0]
+        scope_name = view.scope_name(cursor.b).strip()
+        scope_list = scope_name.split(' ')
+        if (scope_list and (scope_list[0] == 'text.braille')):
+            
+            current_scope_content = view.extract_scope(cursor.b)
+            view.set_status(
+                'current_scope_content', 
+                scope_list[-1]+' '+view.substr(current_scope_content)+' '
+                )
+
+    

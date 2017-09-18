@@ -7,7 +7,7 @@
                kyrie
               :::::::
       andante maestoso  $c
-    #a #,-=.
+    #a #,-=.                            
   soprano '.`tutti`f$d.`p$ydxu
 `f$e.`p$zexu `f$f.`p$&fxu `f$7.g26.f
 5.e5v m !: u!
