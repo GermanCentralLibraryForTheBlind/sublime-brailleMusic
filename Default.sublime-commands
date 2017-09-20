@@ -1,7 +1,13 @@
 [
     {
-        "caption": "Braille Überschrift",
+        "caption": "Braille Überschrift 2",
         "command": "braille_headline"
+    },
+    {
+        "caption": "Braille Überschrift 1",
+        "command": "braille_headline",
+        "args": {"underline_char":"="}
+
     },
     {
         "caption": "Braille Zentrieren",

@@ -34,14 +34,18 @@ class AlignCommand(object):
     def left_align_current_line(self):
         return '{:<{width}}'.format(self.cur_line.strip(), width=self.line_width)
 
+    def underline(self, char=':'):
+        return '\n' + '{:^{width}}'.format(char*7, width=self.line_width)
+
 class BrailleHeadlineCommand(sublime_plugin.TextCommand, AlignCommand):
     """
         Überschrift zentrieren und mit '::::::' unterstreichen
     """
-    def run(self, edit):
-        new_line = self.center_current_line()
-        new_line+= '\n' + '{:^{width}}'.format('::::::', width=self.line_width)
-        self.view.replace(edit, self.cur_line_region, new_line)
+    def run(self, edit, underline_char=':'):
+        self.view.replace(edit,
+        self.cur_line_region,
+        self.center_current_line()+self.underline(underline_char)
+        )
        
 
 class BrailleCenterCommand(sublime_plugin.TextCommand, AlignCommand):
@@ -49,16 +53,18 @@ class BrailleCenterCommand(sublime_plugin.TextCommand, AlignCommand):
         Überschrift zentrieren und mit '::::::' unterstreichen
     """
     def run(self, edit):
-        new_line = self.center_current_line()
-        self.view.replace(edit, self.cur_line_region, new_line)
+        self.view.replace(edit,
+            self.cur_line_region, 
+            self.center_current_line()
+            )
 
 class BrailleRightAlignCommand(sublime_plugin.TextCommand, AlignCommand):
     """
         Überschrift zentrieren und mit '::::::' unterstreichen
     """
     def run(self, edit):
-        self.view.replace(
-            edit, self.cur_line_region, 
+        self.view.replace(edit,
+            self.cur_line_region, 
             self.right_align_current_line()
             )        
 
@@ -67,8 +73,10 @@ class BrailleLeftAlignCommand(sublime_plugin.TextCommand, AlignCommand):
         Überschrift zentrieren und mit '::::::' unterstreichen
     """
     def run(self, edit):
-        new_line = self.left_align_current_line()
-        self.view.replace(edit, self.cur_line_region, new_line)                
+        self.view.replace(edit,
+            self.cur_line_region,
+            self.left_align_current_line()
+            )                
 
 
 class BrailleStatus(sublime_plugin.EventListener, AlignCommand):
