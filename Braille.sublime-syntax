@@ -15,7 +15,7 @@ variables:
   other123: '[6\+\?\(\)&7#\*,;/={]'
   digit: '[a-j]'
   lower_digit: '[,;:/\?\+=\(\*\)]'
-  number: '#{{digit}}+'
+  number: '#({{digit}})+'
   lower_number: '#{{lower_digit}}+'
   fraction: '{{number}}{{lower_digit}}+'
   bracket: '(?:\.)?''=' #eckige Klammer 
@@ -99,10 +99,12 @@ contexts:
     # strings in YAML. When using single quoted strings, only single quotes
     # need to be escaped: this is done by using two single quotes next to each
     # other.
-    - match: '\s*(.*)\s+{{staff_prefix}}'
+
+    - match: '\s*((?:{{section}}))|(.*)?\s*{{staff_prefix}}'
       scope: keyword.control.staff.braille
       captures:
-        1: storage.modifier.instrument.braille #Instrumentname 
+        1: meta.diff.section.braille 
+        2: storage.modifier.instrument.braille 
       push: inside_staff
   
   inside_staff: 
