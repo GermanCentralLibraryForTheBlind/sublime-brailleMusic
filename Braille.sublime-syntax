@@ -24,7 +24,8 @@ variables:
   #Schluss, Teilschluss, 
   section: ({{number}}\s)?#{{lower_digit}}+\.?\-{{lower_digit}}+\.?\s
   key: '[123]{,3}'
-  key_time: '({{key}})({{fraction}})'
+  c_time: '$c|_c'  #"C" oder "Alla Breve"
+  key_time: '({{key}})({{c_time}}|{{fraction}})'
   fermate: "2l"
   
   bar_end: "2k|2k."
@@ -49,20 +50,24 @@ variables:
   note: '{{eigth_128}}|{{quarter_64}}|{{half_32}}|{{whole_16}}'
   rest: '[xvum]'
   ####################
-
-  fingers: a|b|l|,|k
-  intervals: '(?:(?:{{accidental}})?(\||[0#\*):-])(?:{{fingers}}){,2})'
-  phrase_start: '<b'
-  phrase_end: '>;'
+  ## Slurs, ties, phrases
   tie: '"c'
   chord_tie: '\$c'
   bow_after: '>;|cc|{{phrase_end}}|{{tie}}|{{chord_tie}}|c'
-  # abs. dynamics + cresc./decresc.
+  phrase_start: '<b'
+  phrase_end: '>;'
+  ## Fingering
+  fingers: a|b|l|,|k
+  interval: '(?:(?:{{accidental}})?(\||[0#\*):-]){1,2}(?:{{fingers}}){,2}(?:{{chord_tie}})?)'
+  ##Dynamics
   # Es dürfen keine Zeichen folgen, welche die Punkte 1-3 enthalten (Punkt 3 davor)
   dynamics: (sfz|fp|mp|mf|sf|fz|p{1,3}|f{1,3}|c|d)(?!{{char_de}}-`|{{other123}}) 
+  # Abs. Dynamik mit Anweisung als Text dahinter
   dynamics2: (sfz|fp|mp|mf|sf|fz|p{1,3}|f{1,3}|c|d)\s+({{bracket}}?(({{char_de}}|\s)*){{bracket}}?)(?=`)
   # (de)cresc. Winkel
   cresc: '`[cd:/]'
+  cresc_end: '`:'
+  decresc_end: '`/'
   pedal_on: '2c|12c|!1c|!2c'
   pedal_off: '1c'
 
@@ -130,7 +135,7 @@ contexts:
     # - match: '{{octave}}'
     #   scope: support.other.variable
     # barlines
-    - match: '({{repeat_end}})?({{bar_end}})?({{fermate}})?'                 #barline/repeats
+    - match: '(`?{{repeat_end}})?({{bar_end}})?({{fermate}})?'                 #barline/repeats
       captures: 
         1: comment.measure.repeat_end.braille
         2: comment.measure.barline.braille   
@@ -138,7 +143,7 @@ contexts:
     # notes incl. prefix (accid., bow_start, ornaments),
     # postfix (finger, slurs, intervals)... TODO(?<!`)
     # TODO: make multiple occur. items non capturig or push
-    - match: '({{value_diff}})?({{phrase_start}})?({{ornaments}})?((?:{{accent}})+)?({{pedal_on}})?''?({{accidental}})?({{octave}})?({{note}})(\.{,2})((?:{{fingers}})+)?({{bow_after}})?({{intervals}}+)?({{pedal_off}})?'
+    - match: '({{value_diff}})?({{phrase_start}})?({{ornaments}})?((?:{{accent}})+)?({{pedal_on}})?''?({{accidental}})?({{octave}})?({{note}})(\.{,2})((?:{{fingers}})+)?({{bow_after}})?({{interval}}+)?({{pedal_off}})?'
 
       scope: entity.note.braille
       captures: 
@@ -168,9 +173,12 @@ contexts:
     - match: '`({{bracket}})?({{dynamics2}}|{{dynamics}})({{bracket}})?'
       scope: punctuation.dynamics.braille
     # directive texts  
-    - match: '`({{bracket}})?' #(`.+?(?!{{dynamics}}))
+    - match: '(`(?!{{bar_end}})({{bracket}})?([a-z]|[0-5~98\|}])+\.?)'
+         #'`({{bracket}})?(({{char_de}}-`)|\s|\.)+{{bracket}}?'
+    
       scope: string.quoted.word.braille
-      push: word   #mehrzeilig möglich
+      # can be multiline-> push!
+      push: word   
     # measure end condition = whitespace or newline 
     - match: \s
       scope: constant.character.end.braille
@@ -179,7 +187,8 @@ contexts:
   #Wortzeichen
   word:
     - meta_scope: string.quoted.word.braille
-    - match: '({{bracket}})?(?={{octave}}|[\.`])'
+
+    - match: (([a-z]|[0-5~98\|}\s\.])*({{bracket}})?(?=(`|{{octave}}))) #'(?=({{octave}}|[\.`]))'
       # scope: constant.language.end.braille
       pop: true
 
@@ -217,8 +226,22 @@ contexts:
       push: inside_lyrics
 
   inside_lyrics:
+    - meta_scope: string.lyrics.braille
     # - meta_include_prototype: false
-    - meta_scope: string.quoted.double.braille
+    # mehrere Silben auf einer Note
+    - match: '\*'
+      scope: comment.lyrics.repeat.braille
+      push:
+        - match: '\(.*\)'
+          scope: variable.lyrics.melisma.braille
+        - match: '\*'
+          scope: comment.lyrics.repeat.braille
+          pop: true
+
+        
+    - match: '\(.*\)'
+      scope: variable.lyrics.melisma.braille
+    # Wortwiederholung
     # end condition: double space, not next verse
     - match: ^\s\s(?!#)
       scope: punctuation.definition.string.end.braille
