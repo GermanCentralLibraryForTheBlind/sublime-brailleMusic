@@ -17,7 +17,7 @@ or musical impaired people.
 ## Installation
 - Download and install [Sublime Text](https://www.sublimetext.com/3) for your platform
 - Download, unpack this repo and copy it to your Package folder under Data/Packages/Braille
-(the package not yet listed in package control)
+(the package is not yet listed in package control)
 - for Braille- Music files, set syntax to "Braille"
 - for examples, check the 'examples' subfolder folder
 - until we deliver an own color scheme, please install the "Phix Dark Color Scheme" over Package Comtrol (recommended theme: "Theme Soda dark")
