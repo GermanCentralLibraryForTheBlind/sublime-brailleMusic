@@ -37,7 +37,7 @@ class AlignCommand(object):
 
 class BrailleHeadlineCommand(sublime_plugin.TextCommand, AlignCommand):
     """
-        Überschrift zentrieren und mit '::::::' unterstreichen
+        Make centered headline with underline chars
     """
     def run(self, edit, underline_char=':'):
         self.view.replace(edit,
@@ -48,7 +48,7 @@ class BrailleHeadlineCommand(sublime_plugin.TextCommand, AlignCommand):
 
 class BrailleCenterCommand(sublime_plugin.TextCommand, AlignCommand):
     """
-        Überschrift zentrieren und mit '::::::' unterstreichen
+        Center current line
     """
     def run(self, edit):
         self.view.replace(edit,
@@ -58,7 +58,7 @@ class BrailleCenterCommand(sublime_plugin.TextCommand, AlignCommand):
 
 class BrailleRightAlignCommand(sublime_plugin.TextCommand, AlignCommand):
     """
-        Überschrift zentrieren und mit '::::::' unterstreichen
+        Right align current line
     """
     def run(self, edit):
         self.view.replace(edit,
@@ -68,7 +68,7 @@ class BrailleRightAlignCommand(sublime_plugin.TextCommand, AlignCommand):
 
 class BrailleLeftAlignCommand(sublime_plugin.TextCommand, AlignCommand):
     """
-        Überschrift zentrieren und mit '::::::' unterstreichen
+        Left align current line
     """
     def run(self, edit):
         self.view.replace(edit,
@@ -78,6 +78,9 @@ class BrailleLeftAlignCommand(sublime_plugin.TextCommand, AlignCommand):
 
 
 class BrailleStatus(sublime_plugin.EventListener, AlignCommand):
+    """
+        View relecant braille scope under the cursor in the status bar
+    """
     def on_selection_modified(self, view):
         cursor = view.sel()[0]
         scope_name = view.scope_name(cursor.b).strip()
