@@ -16,3 +16,8 @@ or musical impaired people.
 - for Braille- Music files, set syntax to "Braille"
 - for examples, check the 'examples' subfolder folder
 - until we deliver an own color scheme, please install the "Phix Dark Color Scheme" over Package Comtrol (recommended theme: "Theme Soda dark")
+
+# WARNING
+This is an alpha- Version under heavy developement, optimized for use at the DZB.
+It will likely not work with your own braille- music- text files.
+
