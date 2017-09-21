@@ -7,7 +7,7 @@ Sublime Text 3 syntax support for Ascii- Braille Music text files
 > -- <cite>[From Wikpedia](https://en.wikipedia.org/wiki/Braille_music)</cite>
 
 This is a Sublime Text 3 - package for sighted people to help them to read, produce or correct music scores for blind
-or musical impaired people.
+or visual impaired people.
 
 ## Features
 - syntax highlighting
