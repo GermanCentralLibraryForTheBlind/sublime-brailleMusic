@@ -21,8 +21,10 @@ or musical impaired people.
 - for Braille- Music files, set syntax to "Braille"
 - for examples, check the 'examples' subfolder folder
 - until we deliver an own color scheme, please install the "Phix Dark Color Scheme" over Package Comtrol (recommended theme: "Theme Soda dark")
+## Particular Syntax requirements
+- look at the examples, whitespace indentation required for music
 
 # WARNING
-This is an alpha- Version under heavy developement, optimized for use at the DZB.
+This is an alpha- Version under heavy developement, optimized for use at the [German Central Library for the blind and visual impaired](http://dzb.de).
 It will likely not work with your own braille- music- text files.
 
