@@ -36,7 +36,7 @@ variables:
   mordent: '!\+l|<\+L'
   trill: '!?\+|<?\+'
   ornaments: '{{mordent}}|{{trill}}|''/l?|!?\?'
-  # Bet.|stacc.|ten.
+  # accent|stacc.|ten.
   accent: '\$\(|\(|_\('   
   value_diff: '''2,|>2,' #Wertscheidungs- oder Gruppierungszeichen
   octave : '"(?!c)|>|_|\!|\$|\<|'''
@@ -71,6 +71,7 @@ variables:
   pedal_on: '2c|12c|!1c|!2c'
   pedal_off: '1c'
 
+
 contexts:
   # The prototype context is prepended to all contexts but those setting
   # meta_include_prototype: false.
@@ -99,23 +100,27 @@ contexts:
     # strings in YAML. When using single quoted strings, only single quotes
     # need to be escaped: this is done by using two single quotes next to each
     # other.
+    - match: '({{char_de}})+\s(?={{staff_prefix}})'
+      scope: storage.modifier.instrument.braille
 
-    - match: '\s*((?:{{section}}))|(.*)?\s*{{staff_prefix}}'
+    - match: '\s*{{staff_prefix}}' #\s*((?:{{section}}))|(.*)?
       scope: keyword.control.staff.braille
-      captures:
-        1: meta.diff.section.braille 
-        2: storage.modifier.instrument.braille 
+      #captures:
+      #  1: meta.diff.section.braille 
+      #  2: storage.modifier.instrument.braille 
       push: inside_staff
   
   inside_staff: 
     - meta_scope: sublimelinter.mark.error.braille 
     - meta_include_prototype: false
-    #- scope: constant.language.braille
-    - match: ^\.   # . if char after music prefix contains points1-3
+    - match: '\.'
+      scope: comment.escape.braille
+    # . if char after music prefix contains points 1-3
+    - match: ^\.   
       scope: comment.escape.braille
     - match: '!:\s' #black print page turn
       scope: comment.page_turn.braille
-    # measure starts after first non whitespace char
+    # else: measure starts after first non whitespace char
     - match: (?=\S) #((?:^[^\s]*)(?=\s))|((?:\s)(?=[^\s]*))
       # scope: constant.character.braille
       push: measure
@@ -126,6 +131,10 @@ contexts:
 
 
   measure:
+    - meta_include_prototype: false
+    # key/time
+    - match: '{{key_time}}'
+      scope: constant.numeric.key_time.braille
     # voice sign
     - match: '2`'
       scope: invalid.measure.voice.braille
@@ -133,6 +142,8 @@ contexts:
     - match: '!$'
       scope: invalid.measure.break.braille
     - match: '{{repeat_start}}'
+      scope: comment.whole_rest_repeat.braille
+    - match: '{{number}}m'
       scope: comment.bar_repeat_start.braille
     # - match: '{{octave}}'
     #   scope: support.other.variable
@@ -156,7 +167,7 @@ contexts:
         # 5: invalid.deprecated.accent.braille
         5: string.pedal.braille
         6: storage.modifier.accidental.braille
-        7: support.other.variable.octave.braille
+        7: support.class.octave.braille
         8: entity.note.name.braille
         9: entity.dots.braille
         10: variable.note.finger.braille
@@ -174,6 +185,12 @@ contexts:
         1: comment.value_diff.braille  
     - match: '`({{bracket}})?({{dynamics2}}|{{dynamics}})({{bracket}})?'
       scope: punctuation.dynamics.braille
+      push: 
+        - match: '\1(\.)?'
+          captures:
+            1: punctuation.dynamics.end.braille
+          pop: true
+
     # directive texts  
     - match: '(`(?!{{bar_end}})({{bracket}})?([a-z]|[0-5~98\|}])+\.?)'
          #'`({{bracket}})?(({{char_de}}-`)|\s|\.)+{{bracket}}?'
@@ -203,12 +220,26 @@ contexts:
       scope: punctuation.definition.comment.braille
 
   directive:
-    - match: '(.*)\s+({{key_time}})'
+    # Rhythm directive like note=ca.bpm
+    - match: '(?:\s)({{note}})(=ca.)?({{number}})(?:\s)'
+      scope: constant.language.rhythm.braille
+      captures:
+        1: constant.language.rhythm.note.braille
+        2: constant.language.rhythm.circa.braille
+        3: constant.language.rhythm.bpm.braille
+    # Key and Time
+    - match: '(?:\s)({{key_time}})(?:\s)'
       scope: variable.parameter.directive.braille
       captures: 
-        2: constant.numeric.key_time.braille
-        3: constant.numeric.key.braille
-        4: constant.numeric.time.braille
+        1: constant.numeric.key_time.braille
+        2: constant.numeric.key.braille
+        3: constant.numeric.time.braille
+    #- match: '^(\s)*(?:\s)({{char_de}})+(?:\s)'
+    #  push:
+    #    - match: \1\s+(?={{section}})
+    #      scope: constant.language.directive.braille
+    #      pop: true
+
   section:
     - meta_include_prototype: false
     - match: '{{section}}'
@@ -230,17 +261,17 @@ contexts:
   inside_lyrics:
     - meta_scope: string.lyrics.braille
     # - meta_include_prototype: false
-    # mehrere Silben auf einer Note
-    - match: '\*'
+    # Lyrics repeats
+    - match: '\*{1,2}'
       scope: comment.lyrics.repeat.braille
       push:
         - match: '\(.*\)'
+        # mehrere Silben auf einer Note
           scope: variable.lyrics.melisma.braille
-        - match: '\*'
+        - match: '\*{1,2}'
           scope: comment.lyrics.repeat.braille
           pop: true
 
-        
     - match: '\(.*\)'
       scope: variable.lyrics.melisma.braille
     # Wortwiederholung
@@ -249,12 +280,4 @@ contexts:
       scope: punctuation.definition.string.end.braille
       pop: true
 
-  # comments:
-  #   # Comments begin with a '//' and finish at the end of the line.
-  #   - match: '//'
-  #     scope: punctuation.definition.comment.braille
-  #     push:
-  #       # This is an anonymous context push for brevity.
-  #       - meta_scope: comment.line.double-slash.braille
-  #       - match: $\n?
-  #         pop: true
+  
