@@ -25,6 +25,6 @@ or musical impaired people.
 - look at the examples, whitespace indentation required for music
 
 # WARNING
-This is an alpha- Version under heavy development, optimized for use at the [German Central Library for the blind and visual impaired](http://dzb.de).
+This is an alpha- version under heavy development, optimized for use at the [German Central Library for the blind and visual impaired](http://dzb.de).
 It may not work with your own braille- music- text files.
 
