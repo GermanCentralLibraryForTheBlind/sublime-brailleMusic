@@ -9,6 +9,11 @@ Syntax support for Ascii- Braille Music text files
 This is a Sublime Text 3 - package for sighted people to help them to read, produce or correct music scores for blind
 or musical impaired people.
 
+## Features
+- syntax highlighting
+- shows scope name under the cursor (like *note.braille* in the status bar)
+
+
 ## Installation
 - Download and install [Sublime Text](https://www.sublimetext.com/3) for your platform
 - Download, unpack this repo and copy it to your Package folder under Data/Packages/Braille

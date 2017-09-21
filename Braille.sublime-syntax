@@ -23,7 +23,7 @@ variables:
   ## musikalisch ########################
   #Schluss, Teilschluss, 
   section: ({{number}}\s)?#{{lower_digit}}+\.?\-{{lower_digit}}+\.?\s
-  key: '[123]{,3}'
+  key: '[123]{,3}|#{{digit}}[123]'
   c_time: '$c|_c'  #"C" oder "Alla Breve"
   key_time: '({{key}})({{c_time}}|{{fraction}})'
   fermate: "2l"
@@ -31,7 +31,9 @@ variables:
   bar_end: "2k|2k."
   repeat_start: '2='
   repeat_end: '2;'
-  staff_prefix : ('\.|_`|\$\`)
+  volta_1: '#,'
+  volta_2: '#;'
+  staff_prefix : ('\.|_`|\$`|`\|l|`#k|`#l)
   ## Ornamente
   mordent: '!\+l|<\+L'
   trill: '!?\+|<?\+'
@@ -68,8 +70,9 @@ variables:
   cresc: '`[cd:/]'
   cresc_end: '`:'
   decresc_end: '`/'
+  # Ped.|*Ped.|Ped. nach Akk.los|Halbped.
   pedal_on: '2c|12c|!1c|!2c'
-  pedal_off: '1c'
+  pedal_off: '1c' 
 
 
 contexts:
@@ -185,11 +188,11 @@ contexts:
         1: comment.value_diff.braille  
     - match: '`({{bracket}})?({{dynamics2}}|{{dynamics}})({{bracket}})?'
       scope: punctuation.dynamics.braille
-      push: 
-        - match: '\1(\.)?'
-          captures:
-            1: punctuation.dynamics.end.braille
-          pop: true
+      # push: 
+      #   - match: '\1(\.)?'
+      #     captures:
+      #       1: punctuation.dynamics.end.braille
+      #     pop: true
 
     # directive texts  
     - match: '(`(?!{{bar_end}})({{bracket}})?([a-z]|[0-5~98\|}])+\.?)'
