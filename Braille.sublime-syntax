@@ -6,7 +6,7 @@ file_extensions:
   - out
 scope: text.braille
 variables:
-  ## Allgemeine Braille- Zeichen
+## Common Braille signs
   # Buchstaben ohne nationale Besonderheiten ("western")
   char_western: '[a-z]'
   # deutsche Vollschriftzeichen (+Umlaute ß au eu äu st sch)
@@ -20,21 +20,22 @@ variables:
   fraction: '{{number}}{{lower_digit}}+'
   bracket: '(?:\.)?''=' #eckige Klammer 
  
-  ## musikalisch ########################
-  #Schluss, Teilschluss, 
+########## Braille Music definitions ########################
+## Meta Information  
   section: ({{number}}\s)?#{{lower_digit}}+\.?\-{{lower_digit}}+\.?\s
   key: '[123]{,3}|#{{digit}}[123]'
   c_time: '$c|_c'  #"C" oder "Alla Breve"
   key_time: '({{key}})({{c_time}}|{{fraction}})'
-  fermate: "2l"
   
+##Barline, Endings, Repeats 
   bar_end: "2k|2k."
+  fermate: "2l"
   repeat_start: '2='
   repeat_end: '2;'
   volta_1: '#,'
   volta_2: '#;'
   staff_prefix : ('\.|_`|\$`|`\|l|`#k|`#l)
-  ## Ornamente
+## Ornaments + Accents
   mordent: '!\+l|<\+L'
   trill: '!?\+|<?\+'
   ornaments: '{{mordent}}|{{trill}}|''/l?|!?\?'
@@ -43,7 +44,7 @@ variables:
   value_diff: '''2,|>2,' #Wertscheidungs- oder Gruppierungszeichen
   octave : '"(?!c)|>|_|\!|\$|\<|'''
   accidental: '3{1,2}|2{1,2}|1'
-  ## Notes + Rests ################################
+## Notes + Rests ################################
   eigth_128 : '[defghij]'
   quarter_64 : '[456789w]'
   half_32 : '[nopqrst]'
@@ -51,17 +52,17 @@ variables:
   # All together
   note: '{{eigth_128}}|{{quarter_64}}|{{half_32}}|{{whole_16}}'
   rest: '[xvum]'
-  ####################
-  ## Slurs, ties, phrases
+
+## Slurs, ties, phrases
   tie: '"c'
   chord_tie: '\$c'
   bow_after: '>;|cc|{{phrase_end}}|{{tie}}|{{chord_tie}}|c'
   phrase_start: '<b'
   phrase_end: '>;'
-  ## Fingering
+## Fingering
   fingers: a|b|l|,|k
   interval: '(?:(?:{{accidental}})?(\||[0#\*):-]){1,2}(?:{{fingers}}){,2}(?:{{chord_tie}})?)'
-  ##Dynamics
+## Dynamics
   # Es dürfen keine Zeichen folgen, welche die Punkte 1-3 enthalten (Punkt 3 davor)
   dynamics: (sfz|fp|mp|mf|sf|fz|p{1,3}|f{1,3}|c|d)(?!{{char_de}}-`|{{other123}}) 
   # Abs. Dynamik mit Anweisung als Text dahinter
