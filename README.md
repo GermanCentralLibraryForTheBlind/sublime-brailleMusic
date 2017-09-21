@@ -26,5 +26,5 @@ or musical impaired people.
 
 # WARNING
 This is an alpha- Version under heavy developement, optimized for use at the [German Central Library for the blind and visual impaired](http://dzb.de).
-It will likely not work with your own braille- music- text files.
+It may not work with your own braille- music- text files.
 
