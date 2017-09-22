@@ -12,6 +12,8 @@ or visual impaired people.
 ## Features
 - syntax highlighting
 - shows scope name under the cursor (like *note.braille*) in the status bar
+### TODO:
+- show braille signs/contexts in popup
 
 
 ## Installation
