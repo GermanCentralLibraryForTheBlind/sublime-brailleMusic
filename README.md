@@ -20,7 +20,7 @@ or visual impaired people.
 (the package is not yet listed in package control)
 - for Braille- Music files, set syntax to "Braille"
 - for examples, check the 'examples' subfolder folder
-- until we deliver an own color scheme, please install the "Phix Dark Color Scheme" over Package Comtrol (recommended theme: "Theme Soda dark")
+- until we deliver an own color scheme, please install the "Phix Dark Color Scheme" over Package Control (recommended theme: "Theme Soda dark")
 ## Particular Syntax requirements
 - look at the examples, whitespace indentation required for music
 
