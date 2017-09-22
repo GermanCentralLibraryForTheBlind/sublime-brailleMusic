@@ -87,12 +87,13 @@ class BrailleStatus(sublime_plugin.EventListener, AlignCommand):
         self.scope_list = scope_name.split(' ')
         if (self.scope_list and (self.scope_list[0] == 'text.braille')):
             showed_scope = self.scope_list[-1]
-            if len(self.scope_list)>2 and self.scope_list[-2].endswith('braille') and self.scope_list[-2]!=showed_scope:
-                showed_scope = self.scope_list[-2] + ' ' + showed_scope
-            current_scope_content = view.extract_scope(cursor.a)
+            if len(self.scope_list)>2 and self.scope_list[-2].endswith('braille')\
+              and self.scope_list[-2]!=showed_scope and 'error' not in self.scope_list[-2]:
+                showed_scope = self.scope_list[-2] + '>' + showed_scope
+            current_scope_content = view.extract_scope(cursor.b)
             view.set_status(
                 'current_scope_content', 
-                showed_scope+' '+view.substr(current_scope_content)+' '
+                showed_scope+'   '  #+view.substr(current_scope_content)+' '
                 )
 
     

@@ -2,6 +2,8 @@
 ---
 # See http://www.sublimetext.com/docs/3/syntax.html
 file_extensions:
+  - brm.txt
+  - brm
   - txt
   - out
 scope: text.braille
@@ -23,6 +25,7 @@ variables:
 ########## Braille Music definitions ########################
 ## Meta Information  
   section: ({{number}}\s)?#{{lower_digit}}+\.?\-{{lower_digit}}+\.?\s
+  staff_prefix : ('\.|_`|\$`|`\|l|`#k|`#l)
   key: '[123]{,3}|#{{digit}}[123]'
   c_time: '$c|_c'  #"C" oder "Alla Breve"
   key_time: '({{key}})({{c_time}}|{{fraction}})'
@@ -34,7 +37,8 @@ variables:
   repeat_end: '2;'
   volta_1: '#,'
   volta_2: '#;'
-  staff_prefix : ('\.|_`|\$`|`\|l|`#k|`#l)
+  goback_repeat: '({{number}}){,2}'
+  measure_repeat: '=({{number}})?'
 ## Ornaments + Accents
   mordent: '!\+l|<\+L'
   trill: '!?\+|<?\+'
@@ -100,14 +104,15 @@ contexts:
 
   staff:
     - meta_include_prototype: false
+    - meta_scope: sublimelinter.mark.error.braille 
     # Note that blackslashes don't need to be escaped within single quoted
     # strings in YAML. When using single quoted strings, only single quotes
     # need to be escaped: this is done by using two single quotes next to each
     # other.
     - match: '({{char_de}})+\s(?={{staff_prefix}})'
       scope: storage.modifier.instrument.braille
-
-    - match: '\s*{{staff_prefix}}' #\s*((?:{{section}}))|(.*)?
+#TODO!!!! set anstelle von push für octave oder . (sonst mark.error.braille)
+    - match: '\s*{{staff_prefix}}({{octave}}|\.)' #\s*((?:{{section}}))|(.*)?
       scope: keyword.control.staff.start.braille
       #captures:
       #  1: meta.diff.section.braille 
@@ -148,7 +153,11 @@ contexts:
     - match: '{{repeat_start}}'
       scope: comment.whole_rest_repeat.braille
     - match: '{{number}}m'
-      scope: comment.bar_repeat_start.braille
+      scope: comment.bar_repeat_start.braille 
+    - match: '{{goback_repeat}}(?:{{repeat_end}})?(?:{{bar_end}})?'
+      scope: comment.goback_repeat.braille
+    - match: '{{measure_repeat}}(?:{{repeat_end}})?(?:{{bar_end}})?'
+      scope: comment.measure_repeat.braille
     # - match: '{{octave}}'
     #   scope: support.other.variable
     # barlines
@@ -237,6 +246,8 @@ contexts:
         1: constant.numeric.key_time.braille
         2: constant.numeric.key.braille
         3: constant.numeric.time.braille
+    # - match: '(^\s{4})(({{char_de}}|,)*(?=\s)){1,4}'
+    #   scope: constant.language.directive.braille
     #- match: '^(\s)*(?:\s)({{char_de}})+(?:\s)'
     #  push:
     #    - match: \1\s+(?={{section}})
