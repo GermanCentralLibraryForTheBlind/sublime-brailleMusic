@@ -108,7 +108,7 @@ contexts:
       scope: storage.modifier.instrument.braille
 
     - match: '\s*{{staff_prefix}}' #\s*((?:{{section}}))|(.*)?
-      scope: keyword.control.staff.braille
+      scope: keyword.control.staff.start.braille
       #captures:
       #  1: meta.diff.section.braille 
       #  2: storage.modifier.instrument.braille 
@@ -161,7 +161,6 @@ contexts:
     # postfix (finger, slurs, intervals)... TODO(?<!`)
     # TODO: make multiple occur. items non capturig or push
     - match: '({{value_diff}})?({{phrase_start}})?({{ornaments}})?((?:{{accent}})+)?({{pedal_on}})?''?({{accidental}})?({{octave}})?({{note}})(\.{,2})((?:{{fingers}})+)?({{bow_after}})?({{interval}}+)?({{pedal_off}})?'
-
       scope: entity.note.braille
       captures: 
         1: comment.value_diff.braille
@@ -204,7 +203,7 @@ contexts:
       push: word   
     # measure end condition = whitespace or newline 
     - match: \s
-      scope: constant.character.end.braille
+      scope: constant.measure.end.braille
       pop: true
   
   #Wortzeichen
