@@ -31,7 +31,7 @@ or visual impaired people.
         ({{octave}})?({{note}})(\.{,2})
         ((?:{{fingers}})+)?({{bow_after}})?({{interval}}+)?({{pedal_off}})?
  - in general we follow the standards as shown at http://braille.ch  
-   especially those defined in th *New International Manual
+   especially those defined in the *New International Manual
 of Braille Music Notation*
 
 # WARNING
