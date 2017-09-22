@@ -22,7 +22,13 @@ or visual impaired people.
 - for examples, check the 'examples' subfolder folder
 - until we deliver an own color scheme, please install the "Phix Dark Color Scheme" over Package Control (recommended theme: "Theme Soda dark")
 ## Particular Syntax requirements
-- look at the examples, whitespace indentation required for music
+- look at the examples:
+  - whitespace indentation required for music
+  - particular order of prefixes/ postfixes in the notes required like defined:
+        ({{value_diff}})?({{phrase_start}})?({{ornaments}})?((?:{{accent}})+)?({{pedal_on}})?''?({{accidental}})?
+        ({{octave}})?({{note}})(\.{,2})
+        ((?:{{fingers}})+)?({{bow_after}})?({{interval}}+)?({{pedal_off}})?
+
 
 # WARNING
 This is an alpha- version under heavy development, optimized for use at the [German Central Library for the blind and visual impaired](http://dzb.de).
