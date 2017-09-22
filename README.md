@@ -11,7 +11,7 @@ or visual impaired people.
 
 ## Features
 - syntax highlighting
-- shows scope name under the cursor (like *note.braille* in the status bar)
+- shows scope name under the cursor (like *note.braille*) in the status bar
 
 
 ## Installation
