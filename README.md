@@ -30,7 +30,9 @@ or visual impaired people.
         ({{value_diff}})?({{phrase_start}})?({{ornaments}})?((?:{{accent}})+)?({{pedal_on}})?''?({{accidental}})?
         ({{octave}})?({{note}})(\.{,2})
         ((?:{{fingers}})+)?({{bow_after}})?({{interval}}+)?({{pedal_off}})?
- - in general we follow the standards as shown at http:/braille.ch
+ - in general we follow the standards as shown at http://braille.ch  
+   especially those defined in th *New International Manual
+of Braille Music Notation*
 
 # WARNING
 This is an alpha- version under heavy development, optimized for use at the [German Central Library for the blind and visual impaired](http://dzb.de).
