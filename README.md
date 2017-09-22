@@ -25,6 +25,8 @@ or visual impaired people.
 - look at the examples:
   - whitespace indentation required for music
   - particular order of prefixes/ postfixes in the notes required like defined:
+  
+  
         ({{value_diff}})?({{phrase_start}})?({{ornaments}})?((?:{{accent}})+)?({{pedal_on}})?''?({{accidental}})?
         ({{octave}})?({{note}})(\.{,2})
         ((?:{{fingers}})+)?({{bow_after}})?({{interval}}+)?({{pedal_off}})?
