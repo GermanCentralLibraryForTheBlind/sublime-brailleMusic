@@ -15,7 +15,7 @@ or visual impaired people.
 
 
 ## Installation
-- Download and install [Sublime Text](https://www.sublimetext.com/3) for your platform
+- Download and install [Sublime Text](https://www.sublimetext.com/3) for your platform (to be fair, please register!)
 - Download, unpack this repo and copy it to your Packages folder, i.e. situated under windows in *%appdata%\Sublime Text 3\Packages*
 (the package is not yet listed in package control)
 - for Braille- Music files, set syntax to "Braille"
