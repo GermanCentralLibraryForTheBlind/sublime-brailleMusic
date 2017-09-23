@@ -20,14 +20,14 @@ variables:
   number: '#({{digit}})+'
   lower_number: '#{{lower_digit}}+'
   fraction: '{{number}}{{lower_digit}}+'
-  bracket: '(?:\.)?''=' #eckige Klammer 
+  bracket: '(?:\.)?''?=' #(eckige)? Klammer 
  
 ########## Braille Music definitions ########################
 ## Meta Information  
   section: ({{number}}\s)?#{{lower_digit}}+\.?\-{{lower_digit}}+\.?\s
   staff_prefix : ('\.|_`|\$`|`\|l|`#k|`#l)
   key: '[123]{,3}|#{{digit}}[123]'
-  c_time: '$c|_c'  #"C" oder "Alla Breve"
+  c_time: '\$c|_c'  #"C" oder "Alla Breve"
   key_time: '({{key}})({{c_time}}|{{fraction}})'
   
 ##Barline, Endings, Repeats 
@@ -37,14 +37,14 @@ variables:
   repeat_end: '2;'
   volta_1: '#,'
   volta_2: '#;'
-  goback_repeat: '({{number}}){,2}'
+  goback_repeat: '({{number}}){1,2}'
   measure_repeat: '=({{number}})?'
 ## Ornaments + Accents
   mordent: '!\+l|<\+L'
   trill: '!?\+|<?\+'
   ornaments: '{{mordent}}|{{trill}}|''/l?|!?\?'
-  # accent|stacc.|ten.
-  accent: '\$\(|\(|_\('   
+  # accent||ten.||stacc.
+  accent: '(?:\$|_|>)?\('   
   value_diff: '''2,|>2,' #Wertscheidungs- oder Gruppierungszeichen
   octave : '"(?!c)|>|_|\!|\$|\<|'''
   accidental: '3{1,2}|2{1,2}|1'
@@ -60,12 +60,13 @@ variables:
 ## Slurs, ties, phrases
   tie: '"c'
   chord_tie: '\$c'
-  bow_after: '>;|cc|{{phrase_end}}|{{tie}}|{{chord_tie}}|c'
+  bow_after: '''?cc|{{tie}}|{{chord_tie}}|''?c'
+  slur_start: '(?:'')?cc|c'
   phrase_start: '<b'
   phrase_end: '>;'
 ## Fingering
-  fingers: a|b|l|,|k
-  interval: '(?:(?:{{accidental}})?(\||[0#\*):-]){1,2}(?:{{fingers}}){,2}(?:{{chord_tie}})?)'
+  finger: a|b|l|,|k
+  interval: '(?:(?:{{accidental}})?(?:\||[0#\*\):\-])(?:{{finger}}){,2}(?:{{bow_after}}){,2})'
 ## Dynamics
   # Es dürfen keine Zeichen folgen, welche die Punkte 1-3 enthalten (Punkt 3 davor)
   dynamics: (sfz|fp|mp|mf|sf|fz|p{1,3}|f{1,3}|c|d)(?!{{char_de}}-`|{{other123}}) 
@@ -94,7 +95,7 @@ contexts:
     # The main context is the initial starting point of our syntax.
     # Include other contexts from here (or specify them directly).
 
-    - include: quoted
+    #- include: quoted
     - include: staff
     - include: lyrics
     - include: section
@@ -109,10 +110,10 @@ contexts:
     # strings in YAML. When using single quoted strings, only single quotes
     # need to be escaped: this is done by using two single quotes next to each
     # other.
-    - match: '({{char_de}})+\s(?={{staff_prefix}})'
+    - match: '({{char_de}}|\.)+\s(?={{staff_prefix}})'
       scope: storage.modifier.instrument.braille
 #TODO!!!! set anstelle von push für octave oder . (sonst mark.error.braille)
-    - match: '\s*{{staff_prefix}}({{octave}}|\.)' #\s*((?:{{section}}))|(.*)?
+    - match: '\s*{{staff_prefix}}(?={{octave}}|(?:\.|`))' 
       scope: keyword.control.staff.start.braille
       #captures:
       #  1: meta.diff.section.braille 
@@ -141,6 +142,7 @@ contexts:
 
   measure:
     - meta_include_prototype: false
+    # - meta_scope: entity.measure.braille
     # key/time
     - match: '{{key_time}}'
       scope: constant.numeric.key_time.braille
@@ -150,16 +152,30 @@ contexts:
     # line break
     - match: '!$'
       scope: invalid.measure.break.braille
+    # repeats
+    - match: '{{volta_1}}|{{volta_2}}'
+      scope: comment.volta.braille
     - match: '{{repeat_start}}'
-      scope: comment.whole_rest_repeat.braille
-    - match: '{{number}}m'
       scope: comment.bar_repeat_start.braille 
-    - match: '{{goback_repeat}}(?:{{repeat_end}})?(?:{{bar_end}})?'
+    - match: '{{number}}m'
+      scope: comment.whole_rest_repeat.braille
+    - match: '((?:{{pedal_on}})?{{goback_repeat}}(?:{{repeat_end}})?(?:{{bar_end}})?)'
       scope: comment.goback_repeat.braille
-    - match: '{{measure_repeat}}(?:{{repeat_end}})?(?:{{bar_end}})?'
+    - match: '(?:{{pedal_on}})?{{measure_repeat}}(?:{{repeat_end}})?(?:{{bar_end}})?'
       scope: comment.measure_repeat.braille
-    # - match: '{{octave}}'
-    #   scope: support.other.variable
+    # segno, coda
+    - match: '0l'
+      scope: comment.coda.braille
+    - match: '0'
+      scope: comment.segno.braille
+    - match: '{{cresc_end}}'
+      scope: punctuation.crescendo.end.braille
+    - match: '{{decresc_end}}'
+      scope: punctuation.decrescendo.end.braille
+    - match: '{{phrase_start}}'
+      scope: comment.phrase.start.braille  
+    - match: '{{phrase_end}}'
+      scope: comment.phrase.end.braille  
     # barlines
     - match: '(`?{{repeat_end}})?({{bar_end}})?({{fermate}})?'                 #barline/repeats
       captures: 
@@ -169,15 +185,15 @@ contexts:
     # notes incl. prefix (accid., bow_start, ornaments),
     # postfix (finger, slurs, intervals)... TODO(?<!`)
     # TODO: make multiple occur. items non capturig or push
-    - match: '({{value_diff}})?({{phrase_start}})?({{ornaments}})?((?:{{accent}})+)?({{pedal_on}})?''?({{accidental}})?({{octave}})?({{note}})(\.{,2})((?:{{fingers}})+)?({{bow_after}})?({{interval}}+)?({{pedal_off}})?'
+    - match: '({{value_diff}})?({{phrase_start}})?({{ornaments}})?({{pedal_on}})?((?:{{accent}})+)?''?({{accidental}})?({{octave}})?({{note}})(\.{,2})((?:{{finger}})+)?((?:{{bow_after}}){,2})?((?:{{interval}})+)?({{fermate}})?({{phrase_end}})?({{pedal_off}})?'
       scope: entity.note.braille
       captures: 
         1: comment.value_diff.braille
         2: comment.phrase_start.braille
         3: invalid.deprecated.ornament.braille
-        4: invalid.deprecated.accents.braille
         # 5: invalid.deprecated.accent.braille
-        5: string.pedal.braille
+        4: string.pedal.braille
+        5: invalid.deprecated.accents.braille
         6: storage.modifier.accidental.braille
         7: support.class.octave.braille
         8: entity.note.name.braille
@@ -185,10 +201,12 @@ contexts:
         10: variable.note.finger.braille
         11: comment.slur_tie.braille
         12: markup.inserted.interval.braille
-        13: markup.inserted.interval.accidental.braille
-        # 16: markup.inserted.interval.interval.braille
+        13: comment.fermate.braille
+        14: comment.phrase.end.braille
+        # 12: markup.inserted.interval.accidental.braille
+        # 13: markup.inserted.interval.interval.braille
         # 17: markup.inserted.interval.finger.braille
-        14: string.inserted.pedal_off.braille
+        15: string.inserted.pedal_off.braille
       
 
     - match: '({{value_diff}})?{{rest}}'
