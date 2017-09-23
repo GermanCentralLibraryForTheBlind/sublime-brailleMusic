@@ -26,13 +26,13 @@ variables:
 ## Meta Information  
   section: ({{number}}\s)?#{{lower_digit}}+\.?\-{{lower_digit}}+\.?\s
   staff_prefix : ('\.|_`|\$`|`\|l|`#k|`#l)
-  key: '[123]{,3}|#{{digit}}[123]'
+  key: '[123]{1,3}|#{{digit}}[123]'
   c_time: '\$c|_c'  #"C" oder "Alla Breve"
-  key_time: '({{key}})({{c_time}}|{{fraction}})'
+  key_time: '(({{key}})?({{c_time}}|{{fraction}}))|({{key}})(?:\s)|({{key}})$'
   
 ##Barline, Endings, Repeats 
-  bar_end: "2k|2k."
-  fermate: "2l"
+  bar_end: '2k\.?'
+  fermate: '2l'
   repeat_start: '2='
   repeat_end: '2;'
   volta_1: '#,'
@@ -77,8 +77,10 @@ variables:
   cresc_end: '`:'
   decresc_end: '`/'
   # Ped.|*Ped.|Ped. nach Akk.los|Halbped.
-  pedal_on: '2c|12c|!1c|!2c'
+  pedal_on: '!?2c|12c|!1c'
   pedal_off: '1c' 
+## Stimmzeichen: Ganztakt|Teilstimme|Teiltakt
+  voice_sign: '2`|!,|\$k'
 
 
 contexts:
@@ -126,10 +128,18 @@ contexts:
     - match: '\.'
       scope: comment.escape.braille
     # . if char after music prefix contains points 1-3
-    - match: ^\.   
-      scope: comment.escape.braille
-    - match: '!:\s' #black print page turn
+    
+    - match: '!:(?:\s)' #black print page turn
       scope: comment.page_turn.braille
+    # inmeasure simile at measure start forbidden
+    - match: '=(?!{{number}}|\s|=)'
+      scope: invalid.simile.braille
+      pop: true
+
+    #full measure simile
+    - match: '(?=({{pedal_on}})?{{measure_repeat}}({{bow_after}}){,2}({{repeat_end}})?({{bar_end}})?\s)'
+      scope: comment.measure.repeat.braille
+      push: simile
     # else: measure starts after first non whitespace char
     - match: (?=\S) #((?:^[^\s]*)(?=\s))|((?:\s)(?=[^\s]*))
       # scope: constant.character.braille
@@ -139,6 +149,21 @@ contexts:
       scope: constant.language.staff.end.braille
       pop: true
 
+  simile:
+    - meta_scope: comment.measure.repeat.braille
+    - match: '{{pedal_on}}'
+      scope: comment.pedal.start.braille
+    - match: '{{bow_after}}'
+      scope: comment.slur_tie.braille
+    - match: \.
+      scope: storage.modifier.repeat.seperator.braille
+    #whole measure simile end
+    - match: \s
+      scope: constant.measure.end.braille
+      pop: true
+    # in measure end
+    - match: \1
+      pop: true
 
   measure:
     - meta_include_prototype: false
@@ -147,22 +172,30 @@ contexts:
     - match: '{{key_time}}'
       scope: constant.numeric.key_time.braille
     # voice sign
-    - match: '2`'
+    - match: '{{voice_sign}}'
       scope: invalid.measure.voice.braille
     # line break
     - match: '!$'
       scope: invalid.measure.break.braille
+    - match: '!(?=\s)'
+      scope: invalid.measure.seperator.braille
     # repeats
     - match: '{{volta_1}}|{{volta_2}}'
       scope: comment.volta.braille
     - match: '{{repeat_start}}'
-      scope: comment.bar_repeat_start.braille 
+      scope: comment.bar_repeat.start.braille 
     - match: '{{number}}m'
-      scope: comment.whole_rest_repeat.braille
+      scope: comment.whole_rest.repeat.braille
     - match: '((?:{{pedal_on}})?{{goback_repeat}}(?:{{repeat_end}})?(?:{{bar_end}})?)'
-      scope: comment.goback_repeat.braille
-    - match: '(?:{{pedal_on}})?{{measure_repeat}}(?:{{repeat_end}})?(?:{{bar_end}})?'
-      scope: comment.measure_repeat.braille
+      scope: comment.goback.repeat.braille
+    - match: '(?:(?:{{pedal_on}})?(?:{{measure_repeat}})(?:{{bow_after}}{,2})?)'
+      scope: comment.inmeasure.repeat.braille
+      push: simile
+      # captures:
+      #   1: comment.pedal.start.braille
+      #   2: comment.slur_tie.braille
+      #   3: comment.repeat.end.braille
+      #   4: comment.bar.end.braille
     # segno, coda
     - match: '0l'
       scope: comment.coda.braille
@@ -258,12 +291,14 @@ contexts:
         2: constant.language.rhythm.circa.braille
         3: constant.language.rhythm.bpm.braille
     # Key and Time
-    - match: '(?:\s)({{key_time}})(?:\s)'
+    - match: '(?:\s){{key_time}}(?:\s)'
       scope: variable.parameter.directive.braille
       captures: 
         1: constant.numeric.key_time.braille
         2: constant.numeric.key.braille
         3: constant.numeric.time.braille
+        4: constant.numeric.key.braille
+        5: constant.numeric.key.braille
     # - match: '(^\s{4})(({{char_de}}|,)*(?=\s)){1,4}'
     #   scope: constant.language.directive.braille
     #- match: '^(\s)*(?:\s)({{char_de}})+(?:\s)'

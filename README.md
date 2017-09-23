@@ -24,14 +24,13 @@ or visual impaired people.
 - for examples, check the 'examples' subfolder folder
 - until we deliver an own color scheme, please install the "Phix Dark Color Scheme" over Package Control (recommended theme: "Theme Soda dark")
 ## Particular Syntax requirements for ASCII Braille Music Files
-- look at the examples:
-  - whitespace indentation required for music
-  - particular order of prefixes/ postfixes in the notes required like defined:
-  
-  
-        ({{value_diff}})?({{phrase_start}})?({{ornaments}})?((?:{{accent}})+)?({{pedal_on}})?''?({{accidental}})?
-        ({{octave}})?({{note}})(\.{,2})
-        ((?:{{fingers}})+)?({{bow_after}})?({{interval}}+)?({{pedal_off}})?
+**Look at the examples!**
+- Music prefixes (e.g key or left/right hand) **must** be preceded by at least one whitespace 
+- Music prefixes **must not** be followed by a char containg Braille- points  1 to 3
+- Following lines **must not** be preceded by whitespace or tab
+- particular order of prefixes/ postfixes in the notes required like defined:
+    
+        ({{value_diff}})?({{phrase_start}})?({{ornaments}})?({{pedal_on}})?((?:{{accent}})+)?''?({{accidental}})?({{octave}})?({{note}})(\.{,2})((?:{{finger}})+)?((?:{{bow_after}}){,2})?((?:{{interval}})+)?({{fermate}})?({{phrase_end}})?({{pedal_off}})?
  - in general we follow the standards as shown at http://braille.ch  
    especially those defined in the *New International Manual
 of Braille Music Notation*
