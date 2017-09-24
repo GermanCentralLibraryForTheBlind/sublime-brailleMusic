@@ -20,6 +20,9 @@
     {
         "caption": "Braille Linksbündig",
         "command": "braille_left_align"
-    }
-       
+    },
+    {
+        "caption": "Braille toggle braille font",
+        "command": "braille_toggle_font"   
+    }    
 ]

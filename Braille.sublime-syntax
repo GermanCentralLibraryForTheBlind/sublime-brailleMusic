@@ -45,7 +45,7 @@ variables:
   ornaments: '{{mordent}}|{{trill}}|''/l?|!?\?'
   # accent||ten.||stacc.
   accent: '(?:\$|_|>)?\('   
-  value_diff: '''2,|>2,' #Wertscheidungs- oder Gruppierungszeichen
+  value_sign: '''2,|>2,' #Wertscheidungs- oder Gruppierungszeichen
   octave : '"(?!c)|>|_|\!|\$|\<|'''
   accidental: '3{1,2}|2{1,2}|1'
 ## Notes + Rests ################################
@@ -107,7 +107,7 @@ contexts:
 
   staff:
     - meta_include_prototype: false
-    - meta_scope: sublimelinter.mark.error.braille 
+    # - meta_scope: sublimelinter.mark.error.staff.braille 
     # Note that blackslashes don't need to be escaped within single quoted
     # strings in YAML. When using single quoted strings, only single quotes
     # need to be escaped: this is done by using two single quotes next to each
@@ -123,7 +123,7 @@ contexts:
       push: inside_staff
   
   inside_staff: 
-    - meta_scope: sublimelinter.mark.error.braille 
+    - meta_scope: sublimelinter.mark.error.staff.braille 
     - meta_include_prototype: false
     - match: '\.'
       scope: comment.escape.braille
@@ -132,7 +132,7 @@ contexts:
     - match: '!:(?:\s)' #black print page turn
       scope: comment.page_turn.braille
     # inmeasure simile at measure start forbidden
-    - match: '=(?!{{number}}|\s|=)'
+    - match: '=(?!({{number}}|({{bow_after}}){,2})|\s|=)'
       scope: invalid.simile.braille
       pop: true
 
@@ -167,7 +167,7 @@ contexts:
 
   measure:
     - meta_include_prototype: false
-    # - meta_scope: entity.measure.braille
+    - meta_scope: entity.measure.braille
     # key/time
     - match: '{{key_time}}'
       scope: constant.numeric.key_time.braille
@@ -178,7 +178,7 @@ contexts:
     - match: '!$'
       scope: invalid.measure.break.braille
     - match: '!(?=\s)'
-      scope: invalid.measure.seperator.braille
+      scope: invalid.measure.separator.braille
     # repeats
     - match: '{{volta_1}}|{{volta_2}}'
       scope: comment.volta.braille
@@ -218,18 +218,18 @@ contexts:
     # notes incl. prefix (accid., bow_start, ornaments),
     # postfix (finger, slurs, intervals)... TODO(?<!`)
     # TODO: make multiple occur. items non capturig or push
-    - match: '({{value_diff}})?({{phrase_start}})?({{ornaments}})?({{pedal_on}})?((?:{{accent}})+)?''?({{accidental}})?({{octave}})?({{note}})(\.{,2})((?:{{finger}})+)?((?:{{bow_after}}){,2})?((?:{{interval}})+)?({{fermate}})?({{phrase_end}})?({{pedal_off}})?'
-      scope: entity.note.braille
+    - match: '({{value_sign}})?({{phrase_start}})?({{ornaments}})?({{pedal_on}})?((?:{{accent}})+)?''?({{accidental}})?({{octave}})?({{note}})(\.{,2})((?:{{finger}})+)?((?:{{bow_after}}){,2})?((?:{{interval}})+)?({{fermate}})?({{phrase_end}})?({{pedal_off}})?'
+      scope: entity.name.note.braille
       captures: 
-        1: comment.value_diff.braille
+        1: comment.value_sign.braille
         2: comment.phrase_start.braille
         3: invalid.deprecated.ornament.braille
         # 5: invalid.deprecated.accent.braille
         4: string.pedal.braille
         5: invalid.deprecated.accents.braille
-        6: storage.modifier.accidental.braille
+        6: storage.accidental.braille
         7: support.class.octave.braille
-        8: entity.note.name.braille
+        8: entity.name.note_name.braille
         9: entity.dots.braille
         10: variable.note.finger.braille
         11: comment.slur_tie.braille
@@ -242,10 +242,10 @@ contexts:
         15: string.inserted.pedal_off.braille
       
 
-    - match: '({{value_diff}})?{{rest}}'
+    - match: '({{value_sign}})?{{rest}}'
       scope: entity.name.rest.braille
       captures:
-        1: comment.value_diff.braille  
+        1: comment.value_sign.braille  
     - match: '`({{bracket}})?({{dynamics2}}|{{dynamics}})({{bracket}})?'
       scope: punctuation.dynamics.braille
       # push: 

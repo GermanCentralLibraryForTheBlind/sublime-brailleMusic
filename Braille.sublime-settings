@@ -5,5 +5,6 @@
 	"translate_tabs_to_spaces": true,
 	"trim_trailing_white_space_on_save": false,
 	"auto_indent": false,
-	"rulers" : [36]
+	"rulers" : [36],
+	"braille_font": "blistabraille6+"
 }

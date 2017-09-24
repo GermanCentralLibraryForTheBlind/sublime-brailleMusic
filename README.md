@@ -12,8 +12,17 @@ or visual impaired people.
 ## Features
 - syntax highlighting
 - shows scope name under the cursor (like *note.braille*) in the status bar
+### Commands
+- align commands in relation to the setted ruler ("line width") 
+  in the plugins config (default: 36):
+  Center: *Ctrl+Alt+c*
+  Right: *Ctrl+Alt+r*
+  Headline: *Ctrl+Alt+u* = center + underline
+- font switcher: *F10* : toggle between normal and braille font
+  (default: blistabraille6+)
+
 ### TODO:
-- show braille signs/contexts in popup
+- see [Issues](https://github.com/GermanCentralLibraryForTheBlind/sublime-brailleMusic/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement)
 
 
 ## Installation
@@ -21,6 +30,8 @@ or visual impaired people.
 - Download, unpack this repo and copy it to your Packages folder, i.e. situated under windows in *%appdata%\Sublime Text 3\Packages*
 (the package is not yet listed in package control)
 - for Braille- Music files, set syntax to "Braille"
+- in order to use the font toggler, install a braille font,
+  like [*Blistabraille*](http://www.braille.ch/blista-d.htm)
 - for examples, check the 'examples' subfolder folder
 - until we deliver an own color scheme, please install the "Phix Dark Color Scheme" over Package Control (recommended theme: "Theme Soda dark")
 ## Particular Syntax requirements for ASCII Braille Music Files
@@ -38,4 +49,5 @@ of Braille Music Notation*
 # WARNING
 This is an alpha- version under heavy development, optimized for use at the [German Central Library for the blind and visual impaired](http://dzb.de).
 It may not work with your own braille- music- text files.
+Especially the current builds are made for german ascii braille and may not work with other language character sets.
 

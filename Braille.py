@@ -35,6 +35,8 @@ class AlignCommand(object):
     def underline(self, char=':'):
         return '\n' + '{:^{width}}'.format(char*7, width=self.line_width)
 
+
+###### Commands  #########
 class BrailleHeadlineCommand(sublime_plugin.TextCommand, AlignCommand):
     """
         Make centered headline with underline chars
@@ -74,26 +76,46 @@ class BrailleLeftAlignCommand(sublime_plugin.TextCommand, AlignCommand):
         self.view.replace(edit,
             self.cur_line_region,
             self.left_align_current_line()
-            )                
+            )     
 
+class BrailleToggleFontCommand(sublime_plugin.TextCommand):
+    """Toogle between normal and braille font"""
+    default_font=''
+    def run(self, edit):
+        settings = self.view.settings()
+        braille_font = settings.get('braille_font')
+        if braille_font is not None:
+            if settings.get('font_face') != braille_font:
+                self.__class__.default_font = settings.get('font_face')
+                settings.set("font_face", braille_font)
+            else:
+                settings.set("font_face", self.default_font)
 
-class BrailleStatus(sublime_plugin.EventListener, AlignCommand):
+#######Events##############
+
+class BrailleStatus(sublime_plugin.EventListener):
     """
         View relecant braille scope under the cursor in the status bar
     """
-    def on_selection_modified(self, view):
-        cursor = view.sel()[0]
-        scope_name = view.scope_name(cursor.b).strip()
-        self.scope_list = scope_name.split(' ')
-        if (self.scope_list and (self.scope_list[0] == 'text.braille')):
-            showed_scope = self.scope_list[-1]
-            if len(self.scope_list)>2 and self.scope_list[-2].endswith('braille')\
-              and self.scope_list[-2]!=showed_scope and 'error' not in self.scope_list[-2]:
-                showed_scope = self.scope_list[-2] + '>' + showed_scope
-            current_scope_content = view.extract_scope(cursor.b)
+    def on_selection_modified_async(self, view):
+        if 'Braille' in view.settings().get('syntax'):
+            cursor = view.sel()[0]
+            scope_name = view.scope_name(cursor.b).strip()
+            scope_list = scope_name.split(' ')
+            showed_scope = self.get_relevant_scope_part(scope_list[-1])
+            if len(scope_list)>2: 
+                outer_scope = scope_list[-2]
+                if outer_scope.endswith('braille') and outer_scope!=showed_scope and 'error' not in outer_scope:
+                    showed_scope = self.get_relevant_scope_part(outer_scope) + '>' + showed_scope
+                    current_scope_content = view.extract_scope(cursor.b)
             view.set_status(
                 'current_scope_content', 
                 showed_scope+'   '  #+view.substr(current_scope_content)+' '
                 )
 
-    
+    def get_relevant_scope_part(self, scope):
+        parts = scope.split('.')
+        if parts[-2] in ['start','end','repeat']:
+            return parts[-3]+'.'+parts[-2]
+        else:
+            return parts[-2]

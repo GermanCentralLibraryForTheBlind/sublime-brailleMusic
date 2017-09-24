@@ -2,5 +2,6 @@
     {"keys": ["ctrl+alt+u"], "command": "braille_headline"},
     {"keys": ["ctrl+alt+c"], "command": "braille_center"},
     {"keys": ["ctrl+alt+l"], "command": "braille_left_align"},
-    {"keys": ["ctrl+alt+r"], "command": "braille_right_align"}
+    {"keys": ["ctrl+alt+r"], "command": "braille_right_align"},
+    {"keys": ["f10"], "command": "braille_toggle_font"}
 ]
