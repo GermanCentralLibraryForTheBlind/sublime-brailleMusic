@@ -41,7 +41,7 @@ or visual impaired people.
 - Following lines **must not** be preceded by whitespace or tab
 - particular order of prefixes/ postfixes in the notes required like defined:
     
-        ({{value_diff}})?({{phrase_start}})?({{ornaments}})?({{pedal_on}})?((?:{{accent}})+)?''?({{accidental}})?({{octave}})?({{note}})(\.{,2})((?:{{finger}})+)?((?:{{bow_after}}){,2})?((?:{{interval}})+)?({{fermate}})?({{phrase_end}})?({{pedal_off}})?
+        ({{value_sign}})?({{phrase_start}})?({{ornaments}})?({{pedal_on}})?((?:{{accent}})+)?''?({{accidental}})?({{octave}})?({{note}})(\.{,2})((?:{{finger}})+)?((?:{{bow_after}}){,2})?((?:{{interval}})+)?({{fermate}})?({{phrase_end}})?({{pedal_off}})?
  - in general we follow the standards as shown at http://braille.ch  
    especially those defined in the *New International Manual
 of Braille Music Notation*
