@@ -37,8 +37,8 @@ or visual impaired people.
 ## Particular Syntax requirements for ASCII Braille Music Files
 **Look at the examples!**
 - Music prefixes (e.g key or left/right hand) **must** be preceded by at least one whitespace 
-- Music prefixes **must not** be followed by a char containg Braille- points  1 to 3
-- Following lines **must not** be preceded by whitespace or tab
+- Music prefixes **must not** be followed by a char containing Braille- points  1 to 3
+- Following lines in the staff **must not** be preceded by whitespace or tab
 - particular order of prefixes/ postfixes in the notes required like defined:
     
         ({{value_sign}})?({{phrase_start}})?({{ornaments}})?({{pedal_on}})?((?:{{accent}})+)?''?({{accidental}})?({{octave}})?({{note}})(\.{,2})((?:{{finger}})+)?((?:{{bow_after}}){,2})?((?:{{interval}})+)?({{fermate}})?({{phrase_end}})?({{pedal_off}})?
