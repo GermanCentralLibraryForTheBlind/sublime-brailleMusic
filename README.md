@@ -33,7 +33,7 @@ or visual impaired people.
 - in order to use the font toggler, install a braille font,
   like [*Blistabraille*](http://www.braille.ch/blista-d.htm)
 - for examples, check the 'examples' subfolder folder
-- until we deliver an own color scheme, please install the "Phix Dark Color Scheme" over Package Control (recommended theme: "Theme Soda dark")
+- until we deliver an own color scheme, please install the "Phix Dark Color Scheme" over Package Control (recommended theme: "Theme Soda dark"), the default theme "Monokai" works decent as well
 ## Particular Syntax requirements for ASCII Braille Music Files
 **Look at the examples!**
 - Music prefixes (e.g key or left/right hand) **must** be preceded by at least one whitespace 
