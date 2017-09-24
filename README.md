@@ -15,9 +15,9 @@ or visual impaired people.
 ### Commands
 - align commands in relation to the setted ruler ("line width") 
   in the plugins config (default: 36):
-  Center: *Ctrl+Alt+c*
-  Right: *Ctrl+Alt+r*
-  Headline: *Ctrl+Alt+u* = center + underline
+  - Center: *Ctrl+Alt+c*
+  - Right: *Ctrl+Alt+r*
+  - Headline: *Ctrl+Alt+u* = center + underline
 - font switcher: *F10* : toggle between normal and braille font
   (default: blistabraille6+)
 
