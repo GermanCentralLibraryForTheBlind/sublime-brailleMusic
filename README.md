@@ -11,7 +11,9 @@ or visual impaired people.
 
 ## Features
 - syntax highlighting
-- shows scope name under the cursor (like *note.braille*) in the status bar
+- shows scope name under the cursor (like *note>accidental*) in the status bar
+### Configuration
+- loads specific settings for braille editing (ruler for end-of-line, tab-size etc.), see *Braille.sublime-settings*
 ### Commands
 - align commands in relation to the setted ruler ("line width") 
   in the plugins config (default: 36):
@@ -37,7 +39,7 @@ or visual impaired people.
 ## Particular Syntax requirements for ASCII Braille Music Files
 **Look at the examples!**
 - Music prefixes (e.g key or left/right hand) **must** be preceded by at least one whitespace 
-- Music prefixes **must not** be followed by a char containing Braille- points  1 to 3
+- Music prefixes with ending char containing braille points 4-6 (e.g piano LH/RH) **must not** be followed by a char containing Braille- points  1 to 3
 - Following lines in the staff **must not** be preceded by whitespace or tab
 - particular order of prefixes/ postfixes in the notes required like defined:
     
