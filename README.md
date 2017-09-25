@@ -30,7 +30,8 @@ or visual impaired people.
 ## Installation
 - Download and install [Sublime Text](https://www.sublimetext.com/3) for your platform (to be fair, please register!)
 - Download, unpack this repo and copy it to your Packages folder, i.e. situated under windows in *%appdata%\Sublime Text 3\Packages*
-(the package is not yet listed in package control)
+(the package is not yet listed in package control):
+  `git clone https://github.com/GermanCentralLibraryForTheBlind/sublime-brailleMusic.git Braillemusic`
 - for Braille- Music files, set syntax to "Braille"
 - in order to use the font toggler, install a braille font,
   like [*Blistabraille*](http://www.braille.ch/blista-d.htm)
