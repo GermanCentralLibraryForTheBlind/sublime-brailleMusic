@@ -1,5 +1,6 @@
 import sublime
 import sublime_plugin
+from .data.tables import *
 
 def plugin_loaded():
     pass
@@ -109,13 +110,17 @@ class BrailleStatus(sublime_plugin.EventListener):
                     showed_scope = self.get_relevant_scope_part(outer_scope) + '>' + showed_scope
                     current_scope_content = view.extract_scope(cursor.b)
             view.set_status(
-                'current_scope_content', 
+                'current_scope', 
                 showed_scope+'   '  #+view.substr(current_scope_content)+' '
                 )
-
+            # if showed_scope == 'note>note_name':
+            #     view.set_status('current_scope_content',
+            #     view.substr(cursor.b))
+            
     def get_relevant_scope_part(self, scope):
         parts = scope.split('.')
         if parts[-2] in ['start','end','repeat']:
             return parts[-3]+'.'+parts[-2]
         else:
             return parts[-2]
+

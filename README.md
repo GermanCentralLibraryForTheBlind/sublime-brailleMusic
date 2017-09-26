@@ -41,6 +41,7 @@ or visual impaired people.
 - until we deliver an own color scheme, please install the "Phix Dark Color Scheme" over Package Control (recommended theme: "Theme Soda dark"), the default theme "Monokai" works decent as well
 ## Particular Syntax requirements for ASCII Braille Music Files
 **Look at the examples!**
+- all characters must be lower case
 - Music prefixes (e.g key or left/right hand) **must** be preceded by at least one whitespace 
 - Music prefixes with ending char containing braille points 4-6 (e.g piano LH/RH) **must not** be followed by a char containing Braille- points  1 to 3
 - Following lines in the staff **must not** be preceded by whitespace or tab

@@ -17,14 +17,14 @@ variables:
   other123: '[6\+\?\(\)&7#\*,;/={]'
   digit: '[a-j]'
   lower_digit: '[,;:/\?\+=\(\*\)]'
-  number: '#({{digit}})+'
+  number: '#{{digit}}+'
   lower_number: '#{{lower_digit}}+'
   fraction: '{{number}}{{lower_digit}}+'
   bracket: '(?:\.)?''?=' #(eckige)? Klammer 
  
 ########## Braille Music definitions ########################
 ## Meta Information  
-  section: ({{number}}\s)?#{{lower_digit}}+\.?\-{{lower_digit}}+\.?\s
+  section: ({{number}}\s)(#{{lower_digit}}+\.?\-{{lower_digit}}+\.?)\s
   staff_prefix : ('\.|_`|\$`|`\|l|`#k|`#l)
   key: '[123]{1,3}|#{{digit}}[123]'
   c_time: '\$c|_c'  #"C" oder "Alla Breve"
@@ -311,6 +311,9 @@ contexts:
     - meta_include_prototype: false
     - match: '{{section}}'
       scope: meta.diff.section.braille 
+      captures:
+        1: meta.diff.section.number.braille
+        2: meta.diff.section.measure_range.braille
   title:
     - meta_include_prototype: false
     # match underlines only (?)

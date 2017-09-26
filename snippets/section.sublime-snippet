@@ -1,0 +1,8 @@
+<snippet>
+	<content><![CDATA[
+  #${1:a} #${2:,}-${3:?} 
+]]></content>
+	<tabTrigger>S</tabTrigger>
+	<scope>text.braille</scope>
+	<description>New Section</description>
+</snippet>

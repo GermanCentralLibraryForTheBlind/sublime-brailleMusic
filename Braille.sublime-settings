@@ -1,10 +1,10 @@
 {
 	//"color_scheme": "Packages/MarkdownEditing/",
 	"auto_indent": false,
+	"auto_match_enabled": false,
+	"braille_font": "blistabraille6+",
+	"rulers" : [36],
 	"tab_size": 2,
 	"translate_tabs_to_spaces": true,
 	"trim_trailing_white_space_on_save": false,
-	"auto_indent": false,
-	"rulers" : [36],
-	"braille_font": "blistabraille6+"
 }
