@@ -58,7 +58,7 @@ class BrailleHeadlineCommand(sublime_plugin.TextCommand, AlignCommands):
         )
        
 
-class BrailleCenterCommand(sublime_plugin.TextCommand, AlignCommand):
+class BrailleCenterCommand(sublime_plugin.TextCommand, AlignCommands):
     """
         Center current line
     """
@@ -68,7 +68,7 @@ class BrailleCenterCommand(sublime_plugin.TextCommand, AlignCommand):
             self.center_current_line()
             )
 
-class BrailleRightAlignCommand(sublime_plugin.TextCommand, AlignCommand):
+class BrailleRightAlignCommand(sublime_plugin.TextCommand, AlignCommands):
     """
         Right align current line
     """
@@ -78,7 +78,7 @@ class BrailleRightAlignCommand(sublime_plugin.TextCommand, AlignCommand):
             self.right_align_current_line()
             )        
 
-class BrailleLeftAlignCommand(sublime_plugin.TextCommand, AlignCommand):
+class BrailleLeftAlignCommand(sublime_plugin.TextCommand, AlignCommands):
     """
         Left align current line
     """
