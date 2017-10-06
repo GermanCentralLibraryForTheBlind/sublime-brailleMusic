@@ -22,6 +22,7 @@ variables:
   fraction: '{{number}}{{lower_digit}}+'
   bracket: '(?:\.)?''?=' #(eckige)? Klammer 
   paren: '''\.'
+  dash: "'-"
 ########## Braille Music definitions ########################
 ## Meta Information  
   section: ({{number}}\s)(#{{lower_digit}}+\.?\-{{lower_digit}}+\.?)\s
@@ -78,11 +79,11 @@ variables:
   decresc_end: '`/'
   # Ped.|*Ped.|Ped. nach Akk.los|Halbped.
   pedal_on: '!?2c|12c|!1c'
-  pedal_off: '{{paren}}?1c{{paren}}?' 
+  pedal_off: '1c' 
 ## Stimmzeichen: Ganztakt|Teilstimme|Teiltakt
   voice_sign: '2`|!,|\$k'
  # Einklangzeichen 
-  one_tune: '_{{finger}}'
+  one_tune: '_[\.kabl,]'
 
 
 contexts:
@@ -223,7 +224,7 @@ contexts:
     # notes incl. prefix (accid., bow_start, ornaments),
     # postfix (finger, slurs, intervals)... TODO(?<!`)
     # TODO: make multiple occur. items non capturig or push
-    - match: '({{value_sign}})?({{phrase_start}})?({{ornaments}})?({{pedal_on}})?((?:{{accent}})+)?''?({{accidental}})?({{octave}})?({{note}})(\.{,2})((?:{{finger}})+)?((?:{{bow_after}}){,2})?((?:{{interval}})+)?({{fermate}})?({{phrase_end}})?({{pedal_off}})?'
+    - match: '({{value_sign}})?({{phrase_start}})?({{ornaments}})?({{pedal_on}})?((?:{{accent}})+)?''?({{accidental}})?({{octave}})?({{note}})(\.{,2})((?:{{finger}})+)?((?:{{bow_after}}){,2})?((?:{{interval}})+)?({{fermate}})?({{phrase_end}})?((?:{{paren}})?(?:{{pedal_off}})(?:{{paren}})?)?'
       scope: entity.name.note.braille
       captures: 
         1: comment.value_sign.braille
@@ -277,13 +278,18 @@ contexts:
   word:
     - meta_scope: string.quoted.word.braille
 
-    - match: (([a-z]|[0-5~98\|}\s\.])*({{bracket}})?(?=(`|{{octave}}))) #'(?=({{octave}}|[\.`]))'
+    - match: (([a-z]|[0-5~98\|}\s\.{{dash}}])*({{bracket}})?(?=(`|{{octave}}))) #'(?=({{octave}}|[\.`]))'
       # scope: constant.language.end.braille
       pop: true
 
   numbers:
     - match: '#{{digit}}+'
       scope: constant.numeric.braille
+  paren:
+    - match: '''\.'
+      push:
+        - match: '''\.'
+          pop: true  
 
   quoted:
     - match: '''\..*''\.'
