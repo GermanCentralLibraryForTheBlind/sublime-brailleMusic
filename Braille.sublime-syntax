@@ -26,7 +26,7 @@ variables:
 ########## Braille Music definitions ########################
 ## Meta Information  
   section: ({{number}}\s)(#{{lower_digit}}+\.?\-{{lower_digit}}+\.?)\s
-  staff_prefix : ('\.|_`|\$`|`\|l|`#k|`#l)
+  staff_prefix : ('\.|_`|\$`|>`|`\|l|`#k|`#l)
   key: '[123]{1,3}|#{{digit}}[123]'
   c_time: '\$c|_c'  #"C" oder "Alla Breve"
   key_time: '(({{key}})?({{c_time}}|{{fraction}}))|({{key}})(?:\s)|({{key}})$'
@@ -44,7 +44,7 @@ variables:
   mordent: '!\+l|<\+L'
   trill: '!?\+|<?\+'
   ornaments: '{{mordent}}|{{trill}}|''/l?|!?\?'
-  # accent||ten.||stacc.
+  # marc.||ten.||stacc....
   accent: '(?:{{paren}})?(?:[\$_>!''])?\((?:{{paren}})?'   
   value_sign: '''2,|>2,' #Wertscheidungs- oder Gruppierungszeichen
   octave : '"(?!c)|>|_|\!|\$|\<|'''
@@ -105,6 +105,7 @@ contexts:
     - include: lyrics
     - include: section
     - include: directive
+    - include: footnote
     # - include: title
 
 
@@ -263,7 +264,7 @@ contexts:
       #     pop: true
 
     # directive texts  
-    - match: '(`(?!{{bar_end}})({{bracket}})?([a-z]|[0-5~98\|}])+\.?)'
+    - match: '(`(?!{{bar_end}})({{bracket}})?([a-z]|[0-5~98\|}=>])+\.?)'
          #'`({{bracket}})?(({{char_de}}-`)|\s|\.)+{{bracket}}?'
     
       scope: string.quoted.word.braille
@@ -278,7 +279,7 @@ contexts:
   word:
     - meta_scope: string.quoted.word.braille
 
-    - match: (([a-z]|[0-5~98\|}\s\.{{dash}}])*({{bracket}})?(?=(`|{{octave}}))) #'(?=({{octave}}|[\.`]))'
+    - match: (([a-z]|[0-5~98\|}\s\.{{dash}}=])*({{bracket}})?(?=(`|{{octave}}))) #'(?=({{octave}}|[\.`]))'
       # scope: constant.language.end.braille
       pop: true
 
@@ -304,7 +305,7 @@ contexts:
         2: constant.language.rhythm.circa.braille
         3: constant.language.rhythm.bpm.braille
     # Key and Time
-    - match: '(?:\s){{key_time}}(?:\s)'
+    - match: '(?:\s\s){{key_time}}(?:\s)'
       scope: variable.parameter.directive.braille
       captures: 
         1: constant.numeric.key_time.braille
@@ -319,6 +320,16 @@ contexts:
     #    - match: \1\s+(?={{section}})
     #      scope: constant.language.directive.braille
     #      pop: true
+
+## Footnote text below score  
+  footnote:
+    - match: '\s{5}`\?\*\s\S.*'
+      scope: comment.footnote.braille
+      set:
+        - match: '^(\s{4}\S.*)'
+          scope: comment.footnote.braille
+        - match: '^(?!\s{4}\S)'
+          pop: true
 
   section:
     - meta_include_prototype: false
