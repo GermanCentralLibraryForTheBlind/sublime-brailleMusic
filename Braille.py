@@ -108,7 +108,7 @@ class BrailleToggleFontCommand(sublime_plugin.TextCommand):
 
 class BrailleStatus(sublime_plugin.EventListener, ViewUtils):
     """
-        View relecant braille scope under the cursor in the status bar
+        View relevant braille scope under the cursor in the status bar
     """
     def on_selection_modified_async(self, view):
         self.view = view
