@@ -27,7 +27,8 @@ variables:
 ########## Braille Music definitions ########################
 ## Meta Information  
   section: ({{number}}\s)(#{{lower_digit}}+\.?\-{{lower_digit}}+\.?)(?=\s)
-  staff_prefix: ('\.|_`|\$`|>`)
+  music_prefix: '''\.'
+  staff_prefix: (_`|\$`|>`)
   clef: '(?:`(#|\|)(l|k)(#(h|\())?)'
   key: '[123]{1,3}|#{{digit}}[123]'
   c_time: '\$c|_c'  #"C" oder "Alla Breve"
@@ -42,10 +43,14 @@ variables:
   volta_2: '#;'
   goback_repeat: '({{number}}){1,2}'
   measure_repeat: '=({{number}})?'
+## Tuples
+  triplet: ';;?'
+
+
 ## Ornaments + Accents
   mordent: '!\+l|<\+L'
   trill: '!?\+|<?\+'
-  ornaments: '{{mordent}}|{{trill}}|''/l?|!?\?'
+  ornament: '{{mordent}}|{{trill}}|''/l?|!?\?'
   # marc.||ten.||stacc....
   accent: '(?:{{paren}})?(?:[\$_>!''])?\((?:{{paren}})?'   
   value_sign: '''2,|>2,' #Wertscheidungs- oder Gruppierungszeichen
@@ -59,6 +64,9 @@ variables:
   # All together
   note: '{{eigth_128}}|{{quarter_64}}|{{half_32}}|{{whole_16}}'
   rest: '[xvum]'
+
+## note_prefix
+  note_prefix: ({{value_sign}})?({{phrase_start}})?({{ornament}})?({{pedal_on}})?((?:{{accent}})+)?''?({{accidental}})?(?:({{octave}}){,2})?
 
 ## Slurs, ties, phrases
   tie: '"c'
@@ -120,6 +128,15 @@ contexts:
     # need to be escaped: this is done by using two single quotes next to each
     # other.
 #TODO!!!! set anstelle von push für octave oder . (sonst mark.error.braille)
+    - match: '(?:({{char_de}}|\.)+)?(?:\s+)(?:{{music_prefix}})({{clef}})?(?!{{note}})'
+    #(?={{octave}}|{{rest}}|`|#|{{accidental}}|{{note_prefix}}) 
+      scope: keyword.control.staff.start.braille
+      captures:
+        1: storage.modifier.instrument.braille
+        2: keyword.control.staff_prefix.braille 
+        3: keyword.control.clef.braille 
+      push: inside_staff
+
     - match: '(?:({{char_de}}|\.)+)?(?:\s+)(?:{{staff_prefix}})({{clef}})?(?={{octave}}|(?:\.|`))' 
       scope: keyword.control.staff.start.braille
       captures:
@@ -235,28 +252,29 @@ contexts:
     # notes incl. prefix (accid., bow_start, ornaments),
     # postfix (finger, slurs, intervals)... TODO(?<!`)
     # TODO: make multiple occur. items non capturig or push
-    - match: '({{value_sign}})?({{phrase_start}})?({{ornaments}})?({{pedal_on}})?((?:{{accent}})+)?''?({{accidental}})?(?:({{octave}}){,2})?({{note}})(\.{,2})((?:{{change_finger}}|{{finger}})+)?((?:{{bow_after}}){,2})?((?:{{interval}})+)?({{fermate}})?({{phrase_end}})?((?:{{paren}})?(?:{{pedal_off}})(?:{{paren}})?)?'
+    - match: '({{value_sign}})?({{triplet}})?({{phrase_start}})?({{ornament}})?({{pedal_on}})?((?:{{accent}})+)?''?({{accidental}})?(?:({{octave}}){,2})?({{note}})(\.{,2})((?:{{change_finger}}|{{finger}})+)?((?:{{bow_after}}){,2})?((?:{{interval}})+)?({{fermate}})?({{phrase_end}})?((?:{{paren}})?(?:{{pedal_off}})(?:{{paren}})?)?'
       scope: entity.name.note.braille
       captures: 
         1: comment.value_sign.braille
-        2: comment.phrase_start.braille
-        3: invalid.deprecated.ornament.braille
+        2: comment.triplet.braille
+        3: comment.phrase_start.braille
+        4: invalid.deprecated.ornament.braille
         # 5: invalid.deprecated.accent.braille
-        4: string.pedal.braille
-        5: invalid.deprecated.accents.braille
-        6: storage.accidental.braille
-        7: support.class.octave.braille
-        8: entity.name.note_name.braille
-        9: entity.dots.braille
-        10: variable.note.finger.braille
-        11: comment.slur_tie.braille
-        12: markup.inserted.interval.braille
-        13: comment.fermate.braille
-        14: comment.phrase.end.braille
+        5: string.pedal.braille
+        6: invalid.deprecated.accents.braille
+        7: storage.accidental.braille
+        8: support.class.octave.braille
+        9: entity.name.note_name.braille
+        10: entity.dots.braille
+        11: variable.note.finger.braille
+        12: comment.slur_tie.braille
+        13: markup.inserted.interval.braille
+        14: comment.fermate.braille
+        15: comment.phrase.end.braille
         # 12: markup.inserted.interval.accidental.braille
         # 13: markup.inserted.interval.interval.braille
         # 17: markup.inserted.interval.finger.braille
-        15: string.inserted.pedal_off.braille
+        16: string.inserted.pedal_off.braille
       
 
     - match: '({{value_sign}})?{{rest}}(\.{,2})'
@@ -264,10 +282,12 @@ contexts:
       captures:
         1: comment.value_sign.braille
         2: entity.dots.braille  
-    - match: '({{ornaments}})?({{pedal_on}})?((?:{{accent}})+)?''?({{accidental}})?({{octave}})?({{one_tune}})(\.{,2})((?:{{finger}})+)?((?:{{bow_after}}){,2})?'    
+    - match: '({{ornament}})?({{pedal_on}})?((?:{{accent}})+)?''?({{accidental}})?({{octave}})?({{one_tune}})(\.{,2})((?:{{finger}})+)?((?:{{bow_after}}){,2})?'    
       scope: variable.one_tune.braille
     - match: '`({{bracket}})?({{dynamics2}}|{{dynamics}})({{bracket}})?'
       scope: punctuation.dynamics.braille
+    - match: '`k{1,2}' #(?!{{char_de}}-`|{{other123}})
+      scope: punctuation.arpeggio.braille
       # push: 
       #   - match: '\1(\.)?'
       #     captures:
@@ -288,8 +308,8 @@ contexts:
   
   #Wortzeichen
   word:
-    - meta_scope: string.quoted.woord.braille
-    - match: ((#{{digit}}|#{{lower_digit}}|{{char_de_base}}-`|[\s\.{{dash}}=])*({{bracket}})?(?=\.\(|(`\s|`2k|2k|{{octave}}))) #'(?=({{octave}}|[\.`]))'
+    - meta_scope: string.quoted.word.braille
+    - match: ((#{{digit}}|#{{lower_digit}}|{{char_de_base}}-`|\s|(\.\s))*(({{dash}})|({{bracket}}))?(?=\.\(|(`\s|`2k|2k|{{octave}}))) 
       # scope: constant.language.end.braille
       pop: true
 
