@@ -119,14 +119,13 @@ contexts:
     # strings in YAML. When using single quoted strings, only single quotes
     # need to be escaped: this is done by using two single quotes next to each
     # other.
-    - match: '({{char_de}}|\.)+(?=\s)(?={{staff_prefix}})'
-      scope: storage.modifier.instrument.braille
 #TODO!!!! set anstelle von push für octave oder . (sonst mark.error.braille)
-    - match: '(?:\s+){{staff_prefix}}({{clef}})?(?={{octave}}|(?:\.|`))' 
+    - match: '(?:({{char_de}}|\.)+)?(?:\s+)(?:{{staff_prefix}})({{clef}})?(?={{octave}}|(?:\.|`))' 
       scope: keyword.control.staff.start.braille
       captures:
-        1: keyword.control.staff_prefix.braille 
-        2: keyword.control.clef.braille 
+        1: storage.modifier.instrument.braille
+        2: keyword.control.staff_prefix.braille 
+        3: keyword.control.clef.braille 
       push: inside_staff
   
   inside_staff: 
@@ -146,7 +145,7 @@ contexts:
     #full measure simile
     - match: '(?=({{pedal_on}})?({{octave}})?{{measure_repeat}}({{bow_after}}){,2}({{repeat_end}})?({{bar_end}})?\s)'
       scope: comment.measure.repeat.braille
-      push: simile
+      push: whole_measure_simile
     # else: measure starts after first non whitespace char
     - match: (?=\S) #((?:^[^\s]*)(?=\s))|((?:\s)(?=[^\s]*))
       # scope: constant.character.braille
@@ -155,21 +154,29 @@ contexts:
     - match: (?=(\n)|(^\s\s))
       scope: constant.language.staff.end.braille
       pop: true
-
+  
+  in_measure_simile:
+    - include: simile    
+    - match: (?=\s)
+      scope: constant.measure.end.braille
+      pop: true
+    - match: \1
+      pop: true
+    
   simile:
-    - meta_scope: comment.measure.repeat.braille
     - match: '{{pedal_on}}'
       scope: comment.pedal.start.braille
     - match: '{{bow_after}}'
       scope: comment.slur_tie.braille
     - match: \.
       scope: storage.modifier.repeat.seperator.braille
-    #whole measure simile end
+   
+  whole_measure_simile: 
+    - meta_scope: comment.measure.repeat.braille
+    - include: simile    
+ #whole measure simile end
     - match: \s
       scope: constant.measure.end.braille
-      pop: true
-    # in measure end
-    - match: \1
       pop: true
 
   measure:
@@ -200,7 +207,7 @@ contexts:
       scope: comment.goback.repeat.braille
     - match: '(?:(?:{{pedal_on}})?(?:{{measure_repeat}})(?:{{bow_after}}{,2})?)'
       scope: comment.inmeasure.repeat.braille
-      push: simile
+      push: in_measure_simile
       # captures:
       #   1: comment.pedal.start.braille
       #   2: comment.slur_tie.braille
