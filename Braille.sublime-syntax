@@ -50,7 +50,8 @@ variables:
 ## Ornaments + Accents
   mordent: '!\+l|<\+L'
   trill: '!?\+|<?\+'
-  ornament: '{{mordent}}|{{trill}}|''/l?|!?\?'
+  grace: '!?\?'
+  ornament: '{{mordent}}|{{trill}}|''/l?|{{grace}}'
   # marc.||ten.||stacc....
   accent: '(?:{{paren}})?(?:[\$_>!''])?\((?:{{paren}})?'   
   value_sign: '''2,|>2,' #Wertscheidungs- oder Gruppierungszeichen
