@@ -80,7 +80,7 @@ variables:
   finger: '[abl,k]'
   change_finger: '{{finger}}c{{finger}}'
   interval: '(?:(?:{{accidental}})?(?:\||[0#\*\):\-])(?:{{finger}}){,2}(?:{{bow_after}}){,2})'
-## Dynamics
+## Dynamics and other word sign stuff
   # Es dürfen keine Zeichen folgen, welche die Punkte 1-3 enthalten (Punkt 3 davor)
   dynamics: (sfz|fp|mp|mf|sf|fz|p{1,3}|f{1,3}|c|d)(?!{{char_de}}-`|{{other123}}) 
   # Abs. Dynamik mit Anweisung als Text dahinter
@@ -89,6 +89,10 @@ variables:
   cresc: '`[cd:/]'
   cresc_end: '`:'
   decresc_end: '`/'
+  # Chord Symbols
+  chord_symbol: '`\$[cdefgab]([32])?(m|maj|dim)?'
+
+## Piano Sustain Pedal
   # Ped.|*Ped.|Ped. nach Akk.los|Halbped.
   pedal_on: '!?2c|12c|!1c'
   pedal_off: '1c' 
@@ -129,7 +133,7 @@ contexts:
     # need to be escaped: this is done by using two single quotes next to each
     # other.
 #TODO!!!! set anstelle von push für octave oder . (sonst mark.error.braille)
-    - match: '(?:({{char_de}}|\.)+)?(?:\s+)(?:{{music_prefix}})({{clef}})?(?!{{note}})'
+    - match: '(?:({{char_de}}|\.)+(?:\s+))?(?:{{music_prefix}})({{clef}})?(?!{{note}})'
     #(?={{octave}}|{{rest}}|`|#|{{accidental}}|{{note_prefix}}) 
       scope: keyword.control.staff.start.braille
       captures:
@@ -169,7 +173,7 @@ contexts:
       # scope: constant.character.braille
       push: measure
     # exit staff condition
-    - match: (?=(\n)|(^\s\s))
+    - match: (?=(\n)|(^\s\s))|('\.)
       scope: constant.language.staff.end.braille
       pop: true
   
@@ -289,6 +293,9 @@ contexts:
       scope: punctuation.dynamics.braille
     - match: '`k{1,2}' #(?!{{char_de}}-`|{{other123}})
       scope: punctuation.arpeggio.braille
+
+    - match: '{{chord_symbol}}'
+      scope: punctuation.chord_symbol.braille
       # push: 
       #   - match: '\1(\.)?'
       #     captures:
@@ -303,7 +310,7 @@ contexts:
       # can be multiline-> push!
       push: word   
     # measure end condition = whitespace or newline 
-    - match: \s
+    - match: \s|(?:'\.)
       scope: constant.measure.end.braille
       pop: true
   
