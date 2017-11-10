@@ -133,7 +133,7 @@ contexts:
     # need to be escaped: this is done by using two single quotes next to each
     # other.
 #TODO!!!! set anstelle von push für octave oder . (sonst mark.error.braille)
-    - match: '(?:({{char_de}}|\.)+(?:\s+))?(?:{{music_prefix}})({{clef}})?(?!{{note}})'
+    - match: '(?:({{char_de}}|\.)+(?:\s+))?(?:{{music_prefix}})({{clef}})?(?!{{note}}|\s)'
     #(?={{octave}}|{{rest}}|`|#|{{accidental}}|{{note_prefix}}) 
       scope: keyword.control.staff.start.braille
       captures:
@@ -153,6 +153,10 @@ contexts:
   inside_staff: 
     - meta_scope: sublimelinter.mark.error.staff.braille 
     - meta_include_prototype: false
+## short music    
+    - match: ('\.)
+      scope: constant.language.staff.end.braille
+      pop: true
     - match: '\.'
       scope: comment.escape.braille
     # . if char after music prefix contains points 1-3
@@ -310,7 +314,7 @@ contexts:
       # can be multiline-> push!
       push: word   
     # measure end condition = whitespace or newline 
-    - match: \s|(?:'\.)
+    - match: \s|(?='\.)
       scope: constant.measure.end.braille
       pop: true
   
