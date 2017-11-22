@@ -260,8 +260,15 @@ contexts:
         3: comment.measure.fermate.braille   
     # notes incl. prefix (accid., bow_start, ornaments),
     # postfix (finger, slurs, intervals)... TODO(?<!`)
-    # TODO: make multiple occur. items non capturig or push
-    - match: '({{value_sign}})?({{triplet}})?({{phrase_start}})?({{ornament}})?({{pedal_on}})?((?:{{accent}})+)?''?({{accidental}})?(?:({{octave}}){,2})?({{note}})(\.{,2})((?:{{change_finger}}|{{finger}})+)?((?:{{bow_after}}){,2})?((?:{{interval}})+)?({{fermate}})?({{phrase_end}})?((?:{{paren}})?(?:{{pedal_off}})(?:{{paren}})?)?'
+    # TODO: make multiple occur. items non capturing or push
+    - match: '(?x:({{value_sign}})?({{triplet}})?({{phrase_start}})?
+      ({{ornament}})?({{pedal_on}})?((?:{{accent}})+)?
+      ''?({{accidental}})?
+      (?:({{octave}}){,2})?({{note}})(\.{,2})
+      ((?:{{change_finger}}|{{finger}})+)?
+      ((?:{{bow_after}}){,2})?((?:{{interval}})+)?
+      ({{fermate}})?({{phrase_end}})?
+      ((?:{{paren}})?(?:{{pedal_off}})(?:{{paren}})?)?)'
       scope: entity.name.note.braille
       captures: 
         1: comment.value_sign.braille
@@ -286,11 +293,12 @@ contexts:
         16: string.inserted.pedal_off.braille
       
 
-    - match: '({{value_sign}})?{{rest}}(\.{,2})'
+    - match: '({{value_sign}})?({{triplet}})?{{rest}}(\.{,2})'
       scope: entity.name.rest.braille
       captures:
         1: comment.value_sign.braille
-        2: entity.dots.braille  
+        2: comment.triplet.braille
+        3: entity.dots.braille  
     - match: '({{ornament}})?({{pedal_on}})?((?:{{accent}})+)?''?({{accidental}})?({{octave}})?({{one_tune}})(\.{,2})((?:{{finger}})+)?((?:{{bow_after}}){,2})?'    
       scope: variable.one_tune.braille
     - match: '`({{bracket}})?({{dynamics2}}|{{dynamics}})({{bracket}})?'
