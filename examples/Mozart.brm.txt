@@ -1,14 +1,16 @@
-              fantas0               
-              >kv #cig               
-              :::::::               
-                    w.a.mozart  
+              fantas0
+              >kv #cig
+              :::::::
+                       w.a. mozart
     andante  2_c
-  $`.v;;x_gaccib!e,_i!g;e_icg =
-v;;x_hccj!f_j!h;f_jch = v;;x_icc!e!
-3gei;gec_i = v;!eih"c8;dhg"c
+  $`.v;x_gcci;!e_i!g;e_icg
+v;x_gaccib;!e,_i!g;e_icg
+v;x_hccj;!f_j!h;f_jch = v;x_icc!e!
+;3gei;gec_i = v;!eih"c8;dhg"c
 7;_j!g2f"c6;1_j1!fe v;;x3!dbfai3dfa!
-i3dfk 3ef$ja3d3$hik3ebf3!ja;3d3!hi m2l
-  _`>5"co.-2`;>ekcg,ci!u. = >5"co.-!
+i3dfk 3ef$ja3d3$hik3ebf3!ja;3d3!hi
+m2l
+  _`.;>ekc_a"cg,cio.- = >5"co.-!
 2`;>echcj!u. = >4"cn.-2`;>dc3gci!u.
 = ;>j_keh"c8;>i_kdg"c7 ;>h_kj2_f"c!
 6;3>h_k1j_g"c7 ;>ik3dl1f9u m "s2lu

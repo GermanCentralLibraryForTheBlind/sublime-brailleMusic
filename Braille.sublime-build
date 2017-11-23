@@ -1,0 +1,4 @@
+{
+    "shell_cmd": "hodder -out gd \"$file\"",
+    "selector": "text.braille"
+}
