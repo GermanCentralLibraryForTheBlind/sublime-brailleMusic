@@ -72,7 +72,7 @@ variables:
 ## Slurs, ties, phrases
   tie: '"c'
   chord_tie: '\$c'                    #Arp.  Akk.
-  bow_after: '''?cc|{{tie}}|{{chord_tie}}|>c|<c|''?c|!cc?'
+  bow_after: '''\.cc?''\.|''?cc|{{tie}}|{{chord_tie}}|>c|<c|''?c|!cc?'
   slur_start: '(?:''|>)?cc|c'
   phrase_start: '<b'
   phrase_end: '>;'
