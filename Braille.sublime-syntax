@@ -56,7 +56,7 @@ variables:
   accent: '(?:{{paren}})?(?:[\$_>!''])?\((?:{{paren}})?'   
   value_sign: '''2,|>2,' #Wertscheidungs- oder Gruppierungszeichen
   octave : '"(?!c)|>|_|\!|\$|\<|'''
-  accidental: '3{1,2}|2{1,2}|1'
+  accidental: '(?:{{paren}})?(?:'')?(?:3{1,2}|2{1,2}|1)(?:{{paren}})?'
 ## Notes + Rests ################################
   eigth_128 : '[defghij]'
   quarter_64 : '[456789w]'
@@ -70,7 +70,7 @@ variables:
   note_prefix: ({{value_sign}})?({{phrase_start}})?({{ornament}})?({{pedal_on}})?((?:{{accent}})+)?''?({{accidental}})?(?:({{octave}}){,2})?
 
 ## Slurs, ties, phrases
-  tie: '"c'
+  tie: '_?"c'
   chord_tie: '\$c'                    #Arp.  Akk.
   bow_after: '''\.cc?''\.|''?cc|{{tie}}|{{chord_tie}}|>c|<c|''?c|!cc?'
   slur_start: '(?:''|>)?cc|c'
@@ -322,7 +322,7 @@ contexts:
       # can be multiline-> push!
       push: word   
     # measure end condition = whitespace or newline 
-    - match: \s|(?='\.)
+    - match: \s|(?=.'\.)
       scope: constant.measure.end.braille
       pop: true
   
