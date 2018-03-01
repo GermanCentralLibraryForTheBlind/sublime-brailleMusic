@@ -52,8 +52,8 @@ variables:
   trill: '!?\+|<?\+'
   grace: '!?\?'
   ornament: '{{mordent}}|{{trill}}|''/l?|{{grace}}'
-  # marc.||ten.||stacc....
-  accent: '(?:{{paren}})?(?:[\$_>!''])?\((?:{{paren}})?'   
+  # marc.||ten.||mezzostacc.||martellato||stacc....
+  accent: '(?:{{paren}})?(?:[\$_!''<])?\((?:{{paren}})?'   
   value_sign: '''2,|>2,' #Wertscheidungs- oder Gruppierungszeichen
   octave : '"(?!c)|>|_|\!|\$|\<|'''
   accidental: '(?:{{paren}})?(?:'')?(?:3{1,2}|2{1,2}|1)(?:{{paren}})?'
@@ -142,7 +142,7 @@ contexts:
         3: keyword.control.clef.braille 
       push: inside_staff
 
-    - match: '(?:({{char_de}}|\.)+)?(?:\s+)(?:{{staff_prefix}})({{clef}})?(?={{octave}}|(?:\.|`))' 
+    - match: '(?:({{char_de}}|\.)+)?(?:\s+)(?:{{staff_prefix}})({{clef}})?(?={{octave}}|(?:\.|`)|")' 
       scope: keyword.control.staff.start.braille
       captures:
         1: storage.modifier.instrument.braille
