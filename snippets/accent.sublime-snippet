@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+\$(
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>&gt;</tabTrigger>
+    <scope>text.braille</scope>
+</snippet>
