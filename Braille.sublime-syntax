@@ -43,7 +43,7 @@ variables:
   volta_2: '#;'
   goback_repeat: '({{number}}){1,2}'
   measure_repeat: '=({{number}})?'
-  section_repeat: ({{number}})(#{{lower_digit}}+\.?\-{{lower_digit}}+\.?)(?=\s)
+  section_repeat: ({{number}})({{lower_digit}}+\.?\-{{lower_digit}}+\.?)(?=\s)
 ## Tuples
   triplet: ';;?'
 
@@ -209,6 +209,9 @@ contexts:
   measure:
     - meta_include_prototype: false
     - meta_scope: constant.language.measure.braille
+     # section reference (repeat)
+    - match: '{{section_repeat}}'
+      scope: comment.section.repeat.braille
     # key/time
     - match: '{{key_time}}'
       scope: constant.numeric.key_time.braille
@@ -231,9 +234,6 @@ contexts:
       scope: comment.bar_repeat.start.braille 
     - match: '{{number}}m'
       scope: comment.whole_rest.repeat.braille
-     # section reference (repeat)
-    - match: '{{section_repeat}}'
-      scope: comment.section.repeat.braille
     - match: '((?:{{pedal_on}})?{{goback_repeat}}(?={{repeat_end}})?(?={{bar_end}})?)'
       scope: comment.goback.repeat.braille
     - match: '(?:(?:{{pedal_on}})?(?:{{measure_repeat}})(?:{{bow_after}}{,2})?)'
