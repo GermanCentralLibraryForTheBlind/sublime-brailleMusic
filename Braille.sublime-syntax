@@ -218,7 +218,7 @@ contexts:
     # voice sign
     - match: '{{voice_sign}}'
       scope: invalid.measure.voice.braille
-    - match:  '`\?\*'
+    - match:  '`\?\*(?:{{number}})?'
       scope: comment.footnote.braille
     - match: _`|\$`
       scope: keyword.control.change_hand.braille
