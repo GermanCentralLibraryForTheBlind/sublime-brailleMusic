@@ -283,7 +283,7 @@ contexts:
         # 5: invalid.deprecated.accent.braille
         5: string.pedal.braille
         6: invalid.deprecated.accents.braille
-        7: storage.accidental.braille
+        7: comment.accidental.braille
         8: support.class.octave.braille
         9: entity.name.note_name.braille
         10: entity.dots.braille
