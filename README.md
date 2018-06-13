@@ -18,7 +18,7 @@ or visual impaired people.
 - align commands in relation to the setted ruler ("line width") 
   in the plugins config (default: 36):
   - Center: *Ctrl+Alt+c*
-  - Right: *Ctrl+Alt+r*
+  - Right: *Ctrl+r*
   - Headline: *Ctrl+Alt+u* = center + underline
 - font switcher: *F10* : toggle between normal and braille font
   (default: blistabraille6+)
@@ -53,7 +53,7 @@ or visual impaired people.
 of Braille Music Notation*
 
 # WARNING
-This is an alpha- version under heavy development, optimized for use at the [German Central Library for the blind and visual impaired](http://dzb.de).
+This software is still under development and optimized for use at the [German Central Library for the blind and visual impaired](http://dzb.de).
 It may not work with your own braille- music- text files.
 Especially the current builds are made for german ascii braille and may not work with other language character sets.
 
