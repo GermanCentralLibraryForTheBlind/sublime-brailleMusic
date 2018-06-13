@@ -43,7 +43,7 @@ variables:
   volta_2: '#;'
   goback_repeat: '({{number}}){1,2}'
   measure_repeat: '=({{number}})?'
-  section_repeat: ({{number}})({{lower_digit}}+\.?\-{{lower_digit}}+\.?)(?=\s)
+  section_repeat: ({{number}})({{lower_digit}}+\.?\-{{lower_digit}}+\.?)(?:{{bar_end}})?(?=\s)
 ## Tuples
   triplet: ';;?'
 
