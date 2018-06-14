@@ -1,6 +1,6 @@
 # sublime-brailleMusic
 Sublime Text 3 syntax support for Ascii- Braille Music text files
-
+![Sublime Braille Music with theme Monokai](/screenshot_monokai.png?raw=true "Sublime Braille Music with theme Monokai")
 ## Introduction
 > Braille music is a Braille code that allows music to be notated using Braille cells so music can be read by visually impaired musicians. 
 > 
