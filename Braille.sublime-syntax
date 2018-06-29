@@ -80,7 +80,7 @@ variables:
 ## Fingering
   finger: '[abl,k]'
   change_finger: '{{finger}}c{{finger}}'
-  interval: '(?:(?:{{accidental}})?(?:\||[0#\*\):\-])(?:{{finger}}){,2}(?:{{bow_after}}){,2})'
+  interval: '(?:(?:{{accidental}})?(?:\!\-|\||[0#\*\):\-])(?:{{finger}}){,2}(?:{{bow_after}}){,2})'
 ## Dynamics and other word sign stuff
   # Es dürfen keine Zeichen folgen, welche die Punkte 1-3 enthalten (Punkt 3 davor)
   dynamics: (sfz|fp|mp|mf|sf|fz|p{1,3}|f{1,3}|c|d)(?!{{char_de}}-`|{{other123}}) 
