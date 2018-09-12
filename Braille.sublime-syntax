@@ -39,11 +39,11 @@ variables:
   fermate: '2l'
   repeat_start: '2='
   repeat_end: '2;'
-  volta_1: '#,'
-  volta_2: '#;'
+  volta_1: '#({{lower_digit}})((\-|\+#){{lower_digit}})?'
+  
   goback_repeat: '({{number}}){1,2}'
   measure_repeat: '=({{number}})?'
-  section_repeat: ({{number}})({{lower_digit}}+\.?\-{{lower_digit}}+\.?)(?:{{bar_end}})?(?=\s)
+  section_repeat: ({{number}})({{lower_digit}}+\.?\-{{lower_digit}}+\.?)(?:{{pedal_off}})?(?:{{bar_end}})?(?=\s)
 ## Tuples
   triplet: ';;?'
 
@@ -157,7 +157,7 @@ contexts:
 ## short music    
     - match: ('\.)
       scope: constant.language.staff.end.braille
-      pop: true
+      push: short_music
     - match: '\.'
       scope: comment.escape.braille
     # . if char after music prefix contains points 1-3
@@ -182,6 +182,11 @@ contexts:
       scope: constant.language.staff.end.braille
       pop: true
   
+  short_music:
+    - match: \s|('\.)
+      scope: comment.short_music.braille
+      pop: true  
+
   in_measure_simile:
     - include: simile    
     - match: (?=\s)
@@ -228,7 +233,7 @@ contexts:
     - match: '!(?=\s)'
       scope: invalid.measure.separator.braille
     # repeats
-    - match: '({{volta_1}}|{{volta_2}})\.?'
+    - match: '({{volta_1}})\.?'
       scope: comment.volta.braille
     - match: '{{repeat_start}}'
       scope: comment.bar_repeat.start.braille 
@@ -311,6 +316,8 @@ contexts:
       scope: punctuation.dynamics.braille
     - match: '`k{1,2}' #(?!{{char_de}}-`|{{other123}})
       scope: punctuation.arpeggio.braille
+    - match: '`>[a-z]'
+      scope: invalid.rehearsal_mark.braille  
 
     - match: '{{chord_symbol}}'
       scope: punctuation.chord_symbol.braille

@@ -1,0 +1,8 @@
+<snippet>
+	<content><![CDATA[
+${SELECTION/(2)(3)/(|)(0)/g}
+]]></content>
+	<tabTrigger>int</tabTrigger>
+	<scope>text.braille</scope>
+	<description>Interval</description>
+</snippet>

@@ -3,5 +3,6 @@
     {"keys": ["ctrl+alt+c"], "command": "braille_center"},
     {"keys": ["ctrl+alt+l"], "command": "braille_left_align"},
     {"keys": ["ctrl+r"], "command": "braille_right_align"},
-    {"keys": ["f10"], "command": "braille_toggle_font"}
+    {"keys": ["f10"], "command": "braille_toggle_font"},
+    {"keys": ["ctrl+alt+v"], "command": "insert_snippet", "args": {"name": "Packages/Braille/snippets/volta.sublime-snippet"}}
 ]
