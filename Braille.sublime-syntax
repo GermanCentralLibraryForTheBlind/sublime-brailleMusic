@@ -157,7 +157,7 @@ contexts:
 ## short music    
     - match: ('\.)
       scope: constant.language.staff.end.braille
-      pop: true
+      push: short_music
     - match: '\.'
       scope: comment.escape.braille
     # . if char after music prefix contains points 1-3
@@ -182,6 +182,11 @@ contexts:
       scope: constant.language.staff.end.braille
       pop: true
   
+  short_music:
+    - match: \s|('\.)
+      scope: comment.short_music.braille
+      pop: true  
+
   in_measure_simile:
     - include: simile    
     - match: (?=\s)
@@ -311,6 +316,8 @@ contexts:
       scope: punctuation.dynamics.braille
     - match: '`k{1,2}' #(?!{{char_de}}-`|{{other123}})
       scope: punctuation.arpeggio.braille
+    - match: '`>[a-z]'
+      scope: invalid.rehearsal_mark.braille  
 
     - match: '{{chord_symbol}}'
       scope: punctuation.chord_symbol.braille
