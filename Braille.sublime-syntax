@@ -69,6 +69,7 @@ variables:
 
 ## note_prefix
   note_prefix: ({{value_sign}})?({{phrase_start}})?({{ornament}})?({{pedal_on}})?((?:{{accent}})+)?''?({{accidental}})?(?:({{octave}}){,2})?
+  smaller_notes: (\'\?(\?)?)
 
 ## Slurs, ties, phrases
   tie: '_?"c'
@@ -227,6 +228,9 @@ contexts:
       scope: comment.footnote.braille
     - match: _`|\$`
       scope: keyword.control.change_hand.braille
+    # smaller/ bigger notes
+    - match: '{{smaller_notes}}'
+      scope: comment.smaller_notes.braille
     # line break
     - match: '!$'
       scope: invalid.measure.break.braille
