@@ -436,7 +436,7 @@ contexts:
     - match: '\(.*\)'
       scope: variable.lyrics.melisma.braille
  # exit condition: double space, not next verse
-    - match: (?=(^\s\s(?!#))|'\.)
+    - match: (?=(^\s\s(?!#|\s\S))|'\.)
       scope: punctuation.definition.string.end.braille
       pop: true
 
