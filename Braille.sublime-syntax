@@ -320,7 +320,7 @@ contexts:
       scope: punctuation.dynamics.braille
     - match: '`k{1,2}' #(?!{{char_de}}-`|{{other123}})
       scope: punctuation.arpeggio.braille
-    - match: '`>[a-z]'
+    - match: '`>[a-z](?={{octave }})'
       scope: invalid.rehearsal_mark.braille  
 
     - match: '{{chord_symbol}}'
@@ -346,7 +346,7 @@ contexts:
   #Wortzeichen
   word:
     - meta_scope: string.quoted.word.braille
-    - match: ((#{{digit}}|#{{lower_digit}}|{{char_de_base}}-`|\s|(\.\s))*(({{dash}})|({{bracket}}))?(?=\.\(|(`\s|`2k|2k|{{octave}}))) 
+    - match: ((#{{digit}}|#{{lower_digit}}|>|{{char_de_base}}-`|\s|(\.\s))*(({{dash}})|({{bracket}}))?(?=\.\(|(`\s|`2k|2k|{{octave}}))) 
       # scope: constant.language.end.braille
       pop: true
 
@@ -436,7 +436,7 @@ contexts:
     - match: '\(.*\)'
       scope: variable.lyrics.melisma.braille
  # exit condition: double space, not next verse
-    - match: (?=(^\s\s(?!#|\s\S))|'\.)
+    - match: (?=(^\s\s(?!#|\s\S))|('\.)|(?:\s\s{{section}}))
       scope: punctuation.definition.string.end.braille
       pop: true
 
