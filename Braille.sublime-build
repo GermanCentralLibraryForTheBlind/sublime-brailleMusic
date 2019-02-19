@@ -1,4 +1,10 @@
 {
     "cmd": "hodder -out gd \"$file\"",
-    "selector": "text.braille"
+    "selector": "text.braille",
+    "variants": [
+
+        { "name": "Rebuild from capx",
+          "cmd": "hodder \"$file_base_name.capx\""
+        }
+    ]
 }

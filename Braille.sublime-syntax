@@ -6,6 +6,7 @@ file_extensions:
   - brm
   - txt
   - out
+  - PU0
 scope: text.braille
 variables:
 ## Common Braille signs
@@ -21,11 +22,11 @@ variables:
   number: '#{{digit}}+'
   lower_number: '#{{lower_digit}}+'
   fraction: '{{number}}{{lower_digit}}+'
-  bracket: '(?:\.)?''?=' #(eckige)? Klammer 
+  bracket: '(?:\.)?''?=' #(eckige)? Klammer
   paren: '''\.'
   dash: "'-"
 ########## Braille Music definitions ########################
-## Meta Information  
+## Meta Information
   section: ({{number}}\s)(#{{lower_digit}}+\.?\-{{lower_digit}}+\.?)(?=\s)
   music_prefix: '''\.'
   staff_prefix: (_`|\$`|>`)
@@ -33,14 +34,14 @@ variables:
   key: '[123]{1,3}|#{{digit}}[123]'
   c_time: '\$c|_c'  #"C" oder "Alla Breve"
   key_time: '(({{key}})?({{c_time}}|{{fraction}}))|({{key}})(?:\s)|({{key}})$'
-  
-##Barline, Endings, Repeats 
+
+##Barline, Endings, Repeats
   bar_end: '2k\.?'
   fermate: '2l'
   repeat_start: '2='
   repeat_end: '2;'
   volta_1: '#({{lower_digit}})((\-|\+#){{lower_digit}})?'
-  
+
   goback_repeat: '({{number}}){1,2}'
   measure_repeat: '=({{number}})?'
   section_repeat: ({{number}})({{lower_digit}}+\.?\-{{lower_digit}}+\.?)(?:{{pedal_off}})?(?:{{bar_end}})?(?=\s)
@@ -54,7 +55,7 @@ variables:
   grace: '!?\?'
   ornament: '{{mordent}}|{{trill}}|''/l?|{{grace}}'
   # marc.||ten.||mezzostacc.||martellato||stacc....
-  accent: '(?:{{paren}})?(?:[\$_!''<])?\((?:{{paren}})?'   
+  accent: '(?:{{paren}})?(?:[\$_!''<])?\((?:{{paren}})?'
   value_sign: '''2,|>2,' #Wertscheidungs- oder Gruppierungszeichen
   octave : '"{1,2}(?!c)|>|_|\!|\$|\<|''{1,2}'
   accidental: '(?:{{paren}})?(?:'')?(?:3{1,2}|2{1,2}|1)(?:{{paren}})?'
@@ -69,12 +70,12 @@ variables:
 
 ## note_prefix
   note_prefix: ({{value_sign}})?({{phrase_start}})?({{ornament}})?({{pedal_on}})?((?:{{accent}})+)?''?({{accidental}})?(?:({{octave}}){,2})?
-  smaller_notes: (\'\?(\?)?)
+  smaller_notes: '''\?(?:\?)?'
 
 ## Slurs, ties, phrases
   tie: '_?"c'
-  chord_tie: '\$c'                    #Arp.  Akk.
-  bow_after: '''\.cc?''\.|''?cc|{{tie}}|{{chord_tie}}|>c|<c|''?c|!cc?'
+  chord_tie: '\$c'                    #Arp.  Akk.                   Herausg. abgeh.
+  bow_after: '''\.cc?''\.|''?cc|{{tie}}|{{chord_tie}}|>c|<c|''?c|!cc?|!lcc?|_cc?'
   slur_start: '(?:''|>)?cc|c'
   phrase_start: '<b'
   phrase_end: '>;'
@@ -84,9 +85,9 @@ variables:
   interval: '(?:(?:{{accidental}})?(?:\!\-|\||[0#\*\):\-])(?:{{finger}}){,2}(?:{{bow_after}}){,2})'
 ## Dynamics and other word sign stuff
   # Es dürfen keine Zeichen folgen, welche die Punkte 1-3 enthalten (Punkt 3 davor)
-  dynamics: (sfz|fp|mp|mf|sf|fz|p{1,3}|f{1,3}|c|d)(?!{{char_de}}-`|{{other123}}) 
+  dynamics: (sfz|fp|mp|mf|sf|fz|p{1,3}|f{1,3}|c|d)(?!{{char_de}}-`|{{other123}})
   # Abs. Dynamik mit Anweisung als Text dahinter
-  dynamics2: (sfz|fp|mp|mf|sf|fz|p{1,3}|f{1,3}|c|d)\s+({{bracket}}?(({{char_de}}|\s)*){{bracket}}?)(?=`\s)
+  dynamics2: (sfz|fp|mp|mf|sf|fz|p{1,3}|f{1,3}|c|d)\s+({{bracket}}?(({{char_de}}|\s)*){{bracket}}?)(?=(\n)|(`\s))
   # (de)cresc. Winkel
   cresc: '`[cd:/]'
   cresc_end: '`:'
@@ -97,10 +98,10 @@ variables:
 ## Piano Sustain Pedal
   # Ped.|*Ped.|Ped. nach Akk.los|Halbped.
   pedal_on: '!?2c|12c|!1c'
-  pedal_off: '1c' 
+  pedal_off: '1c'
 ## Stimmzeichen: Ganztakt|Teilstimme|Teiltakt
   voice_sign: '2`|!,|\$k'
- # Einklangzeichen 
+ # Einklangzeichen
   one_tune: '_[\.kabl,]'
 
 
@@ -129,40 +130,41 @@ contexts:
 
   staff:
     - meta_include_prototype: false
-    # - meta_scope: sublimelinter.mark.error.staff.braille 
+    # - meta_scope: sublimelinter.mark.error.staff.braille
     # Note that blackslashes don't need to be escaped within single quoted
     # strings in YAML. When using single quoted strings, only single quotes
     # need to be escaped: this is done by using two single quotes next to each
     # other.
 #TODO!!!! set anstelle von push für octave oder . (sonst mark.error.braille)
-    - match: '(?:({{char_de}}|\.)+(?:\s+))?(?:{{music_prefix}})({{clef}})?(?!{{note}}|\s)'
-    #(?={{octave}}|{{rest}}|`|#|{{accidental}}|{{note_prefix}}) 
+    - match: '(?:({{char_de}}|\.|>|=)+(?:\s+))?(?:{{music_prefix}})({{clef}})?(?!{{note}}|\s)'
+    #(?={{octave}}|{{rest}}|`|#|{{accidental}}|{{note_prefix}})
       scope: keyword.control.staff.start.braille
       captures:
         1: storage.modifier.instrument.braille
-        2: keyword.control.staff_prefix.braille 
-        3: keyword.control.clef.braille 
+        2: keyword.control.staff_prefix.braille
+        3: keyword.control.clef.braille
       push: inside_staff
 
-    - match: '(?:({{char_de}}|\.)+)?(?:\s+)(?:{{staff_prefix}})({{clef}})?(?={{octave}}|(?:\.|`)|")' 
+    - match: '(?:({{char_de}}|\.)+)?(?:\s+)(?:{{staff_prefix}})({{clef}})?(?={{octave}}|(?:\.|`)|")'
       scope: keyword.control.staff.start.braille
       captures:
         1: storage.modifier.instrument.braille
-        2: keyword.control.staff_prefix.braille 
-        3: keyword.control.clef.braille 
+        2: keyword.control.staff_prefix.braille
+        3: keyword.control.clef.braille
       push: inside_staff
-  
-  inside_staff: 
-    - meta_scope: sublimelinter.mark.error.staff.braille 
+
+  inside_staff:
+    - meta_scope: sublimelinter.mark.error.staff.braille
     - meta_include_prototype: false
-## short music    
-    - match: ('\.)
-      scope: constant.language.staff.end.braille
-      push: short_music
+    - include: directive
+## short music
+    #- match: ('\.)
+    #  scope: constant.language.staff.end.braille
+    #  push: short_music
     - match: '\.'
       scope: comment.escape.braille
     # . if char after music prefix contains points 1-3
-    
+
     - match: '!:(?:\s)' #black print page turn
       scope: comment.page_turn.braille
     # inmeasure simile at measure start forbidden
@@ -182,20 +184,20 @@ contexts:
     - match: (?=(\n)|(^\s\s))|('\.)
       scope: constant.language.staff.end.braille
       pop: true
-  
+
   short_music:
     - match: \s|('\.)
       scope: comment.short_music.braille
-      pop: true  
+      pop: true
 
   in_measure_simile:
-    - include: simile    
+    - include: simile
     - match: (?=\s)
       scope: constant.measure.end.braille
       pop: true
     - match: \1
       pop: true
-    
+
   simile:
     - match: '{{pedal_on}}'
       scope: comment.pedal.start.braille
@@ -203,10 +205,10 @@ contexts:
       scope: comment.slur_tie.braille
     - match: \.
       scope: storage.modifier.repeat.seperator.braille
-   
-  whole_measure_simile: 
+
+  whole_measure_simile:
     - meta_scope: comment.measure.repeat.braille
-    - include: simile    
+    - include: simile
  #whole measure simile end
     - match: \s
       scope: constant.measure.end.braille
@@ -229,8 +231,8 @@ contexts:
     - match: _`|\$`
       scope: keyword.control.change_hand.braille
     # smaller/ bigger notes
-    - match: '{{smaller_notes}}'
-      scope: comment.smaller_notes.braille
+    # - match: '{{smaller_notes}}'
+    #   scope: comment.smaller_notes.braille
     # line break
     - match: '!$'
       scope: invalid.measure.break.braille
@@ -240,7 +242,7 @@ contexts:
     - match: '({{volta_1}})\.?'
       scope: comment.volta.braille
     - match: '{{repeat_start}}'
-      scope: comment.bar_repeat.start.braille 
+      scope: comment.bar_repeat.start.braille
     - match: '{{number}}m'
       scope: comment.whole_rest.repeat.braille
     - match: '((?:{{pedal_on}})?{{goback_repeat}}(?={{repeat_end}})?(?={{bar_end}})?)'
@@ -255,23 +257,23 @@ contexts:
       #   4: comment.bar.end.braille
     # segno, coda
     - match: '0l'
-      scope: comment.coda.braille
+      scope: constant.coda.braille
     - match: '0'
-      scope: comment.segno.braille
+      scope: constant.segno.braille
     - match: '{{cresc_end}}'
       scope: punctuation.crescendo.end.braille
     - match: '{{decresc_end}}'
       scope: punctuation.decrescendo.end.braille
     - match: '{{phrase_start}}'
-      scope: comment.phrase.start.braille  
+      scope: comment.phrase.start.braille
     - match: '{{phrase_end}}'
-      scope: comment.phrase.end.braille  
+      scope: comment.phrase.end.braille
     # barlines
     - match: '(`?{{repeat_end}})?({{bar_end}})?({{fermate}})?'                 #barline/repeats
-      captures: 
+      captures:
         1: comment.measure.repeat_end.braille
-        2: comment.measure.barline.braille   
-        3: comment.measure.fermate.braille   
+        2: comment.measure.barline.braille
+        3: comment.measure.fermate.braille
     # notes incl. prefix (accid., bow_start, ornaments),
     # postfix (finger, slurs, intervals)... TODO(?<!`)
     # TODO: make multiple occur. items non capturing or push
@@ -284,7 +286,7 @@ contexts:
       ({{fermate}})?({{phrase_end}})?
       ((?:{{paren}})?(?:{{pedal_off}})(?:{{paren}})?)?)'
       scope: entity.name.note.braille
-      captures: 
+      captures:
         1: comment.value_sign.braille
         2: comment.triplet.braille
         3: comment.phrase_start.braille
@@ -305,7 +307,7 @@ contexts:
         # 13: markup.inserted.interval.interval.braille
         # 17: markup.inserted.interval.finger.braille
         16: string.inserted.pedal_off.braille
-      
+
 
     - match: '({{value_sign}})?({{triplet}})?({{pedal_on}})?{{rest}}(\.{,2})'
       scope: entity.name.rest.braille
@@ -313,40 +315,40 @@ contexts:
         1: comment.value_sign.braille
         2: comment.triplet.braille
         3: string.pedal.braille
-        4: entity.dots.braille  
-    - match: '({{ornament}})?({{pedal_on}})?((?:{{accent}})+)?''?({{accidental}})?({{octave}})?({{one_tune}})(\.{,2})((?:{{finger}})+)?((?:{{bow_after}}){,2})?'    
+        4: entity.dots.braille
+    - match: '({{ornament}})?({{pedal_on}})?((?:{{accent}})+)?''?({{accidental}})?({{octave}})?({{one_tune}})(\.{,2})((?:{{finger}})+)?((?:{{bow_after}}){,2})?'
       scope: variable.one_tune.braille
     - match: '`({{bracket}})?({{dynamics2}}|{{dynamics}})({{bracket}})?'
       scope: punctuation.dynamics.braille
-    - match: '`k{1,2}' #(?!{{char_de}}-`|{{other123}})
+    - match: '!?`k{1,2}' #(?!{{char_de}}-`|{{other123}})
       scope: punctuation.arpeggio.braille
     - match: '`>[a-z](?={{octave }})'
-      scope: invalid.rehearsal_mark.braille  
+      scope: invalid.rehearsal_mark.braille
 
     - match: '{{chord_symbol}}'
       scope: punctuation.chord_symbol.braille
-      # push: 
+      # push:
       #   - match: '\1(\.)?'
       #     captures:
       #       1: punctuation.dynamics.end.braille
       #     pop: true
 
-    # directive texts  
+    # directive texts
     - match: '(`(?!{{bar_end}})({{dash}}|{{bracket}})?(>?#{{digit}}|#{{lower_digit}}|{{char_de_base}}-`|=|\.)+\.?)'
          #'`({{bracket}})?(({{char_de}}-`)|\s|\.)+{{bracket}}?'
-    
+
       scope: string.quoted.word.braille
       # can be multiline-> push!
-      push: word   
-    # measure end condition = whitespace or newline 
+      push: word
+    # measure end condition = whitespace or newline
     - match: \s|(?=.'\.)
       scope: constant.measure.end.braille
       pop: true
-  
+
   #Wortzeichen
   word:
     - meta_scope: string.quoted.word.braille
-    - match: ((#{{digit}}|#{{lower_digit}}|>|{{char_de_base}}-`|\s|(\.\s))*(({{dash}})|({{bracket}}))?(?=\.\(|(`\s|`2k|2k|{{octave}}))) 
+    - match: ((#{{digit}}|#{{lower_digit}}|>|{{char_de_base}}-`|\s|(\.\s))*(({{dash}})|({{bracket}}))?(?=\.\(|(`\s|`2k|2k|2;|{{octave}})))
       # scope: constant.language.end.braille
       pop: true
 
@@ -357,7 +359,7 @@ contexts:
     - match: '''\.'
       push:
         - match: '''\.'
-          pop: true  
+          pop: true
 
   quoted:
     - match: '''\..*''\.'
@@ -365,7 +367,7 @@ contexts:
 
   directive:
     # Rhythm directive like note=ca.bpm
-    - match: '(?:\s)({{note}})=(ca.)?({{number}})(?=\s)'
+    - match: '(?:''\.)?({{note}})=(ca.)?({{number}})(?:\s)'
       scope: constant.language.rhythm.braille
       captures:
         1: constant.language.rhythm.note.braille
@@ -374,7 +376,7 @@ contexts:
     # Key and Time
     - match: '(?:\s\s){{key_time}}(?:\s)'
       scope: variable.parameter.directive.braille
-      captures: 
+      captures:
         1: constant.numeric.key_time.braille
         2: constant.numeric.key.braille
         3: constant.numeric.time.braille
@@ -388,7 +390,7 @@ contexts:
     #      scope: constant.language.directive.braille
     #      pop: true
 
-## Footnote text below score  
+## Footnote text below score
   footnote:
     - match: '\s{5}`\?\*\s\S.*'
       scope: comment.footnote.braille
@@ -401,7 +403,7 @@ contexts:
   section:
     - meta_include_prototype: false
     - match: '{{section}}'
-      scope: meta.diff.section.braille 
+      scope: meta.diff.section.braille
       captures:
         1: meta.diff.section.number.braille
         2: meta.diff.section.measure_range.braille
@@ -423,7 +425,10 @@ contexts:
     - meta_scope: string.lyrics.braille
     # - meta_include_prototype: false
     # Lyrics repeats
-    - match: '\*{1,2}'
+    - match:  '`\?\*(?:{{number}})?'
+      scope: comment.footnote.braille
+
+    - match: '(?!\`\?)\*{1,2}'
       scope: comment.lyrics.repeat.braille
       push:
         - match: '\(.*\)'
@@ -436,8 +441,6 @@ contexts:
     - match: '\(.*\)'
       scope: variable.lyrics.melisma.braille
  # exit condition: double space, not next verse
-    - match: (?=(^\s\s(?!#|\s\S))|('\.)|(?:\s\s{{section}}))
+    - match: (?=(^\s\s(?!#|\s\S))|('\.\S)|(?:\s\s{{section}}))
       scope: punctuation.definition.string.end.braille
       pop: true
-
-  
