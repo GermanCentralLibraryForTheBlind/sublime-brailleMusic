@@ -22,7 +22,7 @@ or visual impaired people.
   - Headline: *Ctrl+Alt+u* = center + underline
 - font switcher: *F10* : toggle between normal and braille font
   (default: blistabraille6+)
-
+- build system: call BrailleVis (*Ctrl+B*) or Rebuild with MakeBraille from capx (*Ctrl+Shift+B*)
 ### TODO:
 - see [Issues](https://github.com/GermanCentralLibraryForTheBlind/sublime-brailleMusic/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement)
 
