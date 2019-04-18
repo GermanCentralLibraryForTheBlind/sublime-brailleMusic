@@ -53,7 +53,8 @@ variables:
   mordent: '!\+l|<\+L'
   trill: '!?\+|<?\+'
   grace: '!?\?'
-  ornament: '{{mordent}}|{{trill}}|''/l?|{{grace}}'
+  turnaround: '''?[123]?/'
+  ornament: '{{mordent}}|{{trill}}|''/l?|{{grace}}|{{turnaround}}'
   # marc.||ten.||mezzostacc.||martellato||stacc....
   accent: '(?:{{paren}})?(?:[\$_!''<])?\((?:{{paren}})?'
   value_sign: '''2,|>2,' #Wertscheidungs- oder Gruppierungszeichen
@@ -69,7 +70,7 @@ variables:
   rest: '[xvum]'
 
 ## note_prefix
-  note_prefix: ({{value_sign}})?({{phrase_start}})?({{ornament}})?({{pedal_on}})?((?:{{accent}})+)?''?({{accidental}})?(?:({{octave}}){,2})?
+  note_prefix: ({{value_sign}})?({{phrase_start}})?({{ornament}}){,2}({{pedal_on}})?((?:{{accent}})+)?''?({{accidental}})?(?:({{octave}}){,2})?
   smaller_notes: '''\?(?:\?)?'
 
 ## Slurs, ties, phrases
@@ -77,13 +78,16 @@ variables:
   chord_tie: '\$c'                    #Arp.  Akk.                   Herausg. abgeh.
   bow_after: '''\.cc?''\.|''?cc|{{tie}}|{{chord_tie}}|>c|<c|''?c|!cc?|!l''?cc?|_cc?'
   slur_start: '(?:''|>)?cc|c'
+  slur_in: '\$?(?:_|!)?cc|c'
   phrase_start: '<b'
   phrase_end: '>;'
 ## Fingering
   finger: '[abl,k]'
   change_finger: '{{finger}}c{{finger}}'
-  interval: '(?:(?:{{accidental}})?(?:\!\-|\||[0#\*\):\-])(?:{{finger}}){,2}(?:{{bow_after}}){,2}(?:{{glissando}})?)'
   glissando: '"a'
+## Saitennummer bei Gitarre
+  string_number: '3[abl,k;\.]'
+  interval: '(?:(?:\$?!?c)?(?:{{string_number}})?(?:{{accidental}})?(?:\!\-|\||[0#\*\):\-])(?:{{finger}}){,2}(?:{{bow_after}}){,2}(?:{{glissando}})?)'
 ## Dynamics and other word sign stuff
   # Es dürfen keine Zeichen folgen, welche die Punkte 1-3 enthalten (Punkt 3 davor)
   dynamics: (sfz|fp|mp|mf|sf|fz|p{1,3}|f{1,3}|c|d)(?!{{char_de}}-`|{{other123}})
@@ -178,7 +182,7 @@ contexts:
       scope: comment.measure.repeat.braille
       push: whole_measure_simile
     # guitar pima fingering
-    - match: '[ pimaq]+(?=(\n))'
+    - match: '^[ pimaq]+(?=(\n))'
       scope: comment.finger_line.braille
       push: finger_line
     # else: measure starts after first non whitespace char
@@ -289,11 +293,13 @@ contexts:
     # postfix (finger, slurs, intervals)... TODO(?<!`)
     # TODO: make multiple occur. items non capturing or push
     - match: '(?x:({{value_sign}})?({{triplet}})?({{phrase_start}})?
-      ({{ornament}})?({{pedal_on}})?((?:{{accent}})+)?
+      ({{slur_in}})?({{string_number}})?
+      ((?:{{ornament}}){,2})?({{pedal_on}})?((?:{{accent}})+)?
       ''?({{accidental}})?
       (?:({{octave}}){,2})?({{note}})(\.{,2})
       ((?:{{change_finger}}|{{finger}})+)?
-      ((?:{{bow_after}}){,2})?({{glissando}})?((?:{{interval}})+)?
+      ((?:{{bow_after}}){,2})?({{glissando}})?
+      ((?:{{interval}})+)?
       ({{fermate}})?({{phrase_end}})?
       ((?:{{paren}})?(?:{{pedal_off}})(?:{{paren}})?)?)'
       scope: entity.name.note.braille
@@ -301,24 +307,26 @@ contexts:
         1: comment.value_sign.braille
         2: comment.triplet.braille
         3: comment.phrase_start.braille
-        4: invalid.deprecated.ornament.braille
+        4: comment.slur_tie.braille
+        5: variable.string_number.braille
+        6: invalid.deprecated.ornament.braille
         # 5: invalid.deprecated.accent.braille
-        5: string.pedal.braille
-        6: invalid.deprecated.accents.braille
-        7: comment.accidental.braille
-        8: support.class.octave.braille
-        9: entity.name.note_name.braille
-        10: entity.dots.braille
-        11: variable.note.finger.braille
-        12: comment.slur_tie.braille
-        13: string.quoted.glissando.braille
-        14: markup.inserted.interval.braille
-        15: comment.fermate.braille
-        16: comment.phrase.end.braille
-        # 12: markup.inserted.interval.accidental.braille
+        7: string.pedal.braille
+        8: invalid.deprecated.accents.braille
+        9: comment.accidental.braille
+        10: support.class.octave.braille
+        11: entity.name.note_name.braille
+        12: entity.dots.braille
+        13: variable.note.finger.braille
+        14: comment.slur_tie.braille
+        15: string.quoted.glissando.braille
+        16: constant.numeric.interval.braille
+        17: comment.fermate.braille
+        18: comment.phrase.end.braille
+        #12: markup.inserted.interval.accidental.braille
         # 13: markup.inserted.interval.interval.braille
         # 17: markup.inserted.interval.finger.braille
-        17: string.inserted.pedal_off.braille
+        19: string.inserted.pedal_off.braille
 
 
     - match: '({{value_sign}})?({{triplet}})?({{pedal_on}})?{{rest}}(\.{,2})'
