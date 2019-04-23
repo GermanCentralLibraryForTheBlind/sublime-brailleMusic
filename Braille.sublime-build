@@ -1,10 +1,10 @@
 {
-    "cmd": "hodder -out gd \"$file\"",
+    "shell_cmd": "hodder -out gd \"$file\"",
     "selector": "text.braille",
     "variants": [
 
         { "name": "Rebuild from capx",
-          "cmd": "hodder \"$file_base_name.capx\""
+          "shell_cmd": "hodder \"$file_base_name.capx\""
         }
     ]
 }
