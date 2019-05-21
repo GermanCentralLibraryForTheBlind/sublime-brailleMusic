@@ -29,7 +29,7 @@ variables:
 ## Meta Information
   section: ({{number}}\s)(#{{lower_digit}}+\.?\-{{lower_digit}}+\.?)(?=\s)
   music_prefix: '''\.'
-  staff_prefix: (_`|\$`|>`)
+  staff_prefix: (_`|\$`|>`|\'`)
   clef: '(?:`(#|\|)(l|k)(#(h|\())?)'
   key: '[123]{1,3}|#{{digit}}[123]'
   c_time: '\$c|_c'  #"C" oder "Alla Breve"
@@ -47,7 +47,7 @@ variables:
   section_repeat: ({{number}})({{lower_digit}}+\.?\-{{lower_digit}}+\.?)(?:{{pedal_off}})?(?:{{bar_end}})?(?=\s)
 ## Tuples
   triplet: ';;?'
-
+  xtole: '_(?:[;:/\?\+=\(\*\)]){1,2}\.'
 
 ## Ornaments + Accents
   mordent: '!\+l|<\+L'
@@ -368,7 +368,7 @@ contexts:
   #Wortzeichen
   word:
     - meta_scope: string.quoted.word.braille
-    - match: ((#{{digit}}|#{{lower_digit}}|>|{{char_de_base}}-`|\s|(\.\s))*(({{dash}})|({{bracket}}))?(?=\.\(|(`\s|`2k|2k|2;|{{octave}})))
+    - match: ((#{{digit}}|#{{lower_digit}}|>|{{char_de_base}}-`|\s|(\.\s))*(({{dash}})|({{bracket}}))?(?=\.\(|(`\s|`2k|2k|2;|{{octave}}))) #|(\.\.{{rest}})
       # scope: constant.language.end.braille
       pop: true
 
