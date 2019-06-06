@@ -354,7 +354,7 @@ contexts:
       #     pop: true
 
     # directive texts
-    - match: '(`(?!{{bar_end}})({{dash}}|{{bracket}})?(>?#{{digit}}|#{{lower_digit}}|{{char_de_base}}-`|=|\.)+\.?)'
+    - match: '(`(?!{{bar_end}})({{dash}}|{{bracket}})?(>?#{{digit}}|#{{lower_digit}}|{{char_de_base}}-`|=|\.)*\.?)'
          #'`({{bracket}})?(({{char_de}}-`)|\s|\.)+{{bracket}}?'
 
       scope: string.quoted.word.braille
