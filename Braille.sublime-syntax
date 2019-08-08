@@ -24,6 +24,8 @@ variables:
   fraction: '{{number}}{{lower_digit}}+'
   bracket: '(?:\.)?''?=' #(eckige)? Klammer
   paren: '''\.'
+  bracket_open: '\!\.'
+  bracket_close: ''','
   dash: "'-"
 ########## Braille Music definitions ########################
 ## Meta Information
@@ -51,7 +53,7 @@ variables:
 
 ## Ornaments + Accents
   mordent: '!\+l|<\+L'
-  trill: '!?\+|<?\+'
+  trill: '[!<]?\+'
   grace: '!?\?'
   turnaround: '''?[123]?/'
   ornament: '{{mordent}}|{{trill}}|''/l?|{{grace}}|{{turnaround}}'
@@ -59,7 +61,7 @@ variables:
   accent: '(?:{{paren}})?(?:[\$_!''<])?\((?:{{paren}})?'
   value_sign: '''2,|>2,' #Wertscheidungs- oder Gruppierungszeichen
   octave : '"{1,2}(?!c)|>|_|\!|\$|\<|''{1,2}'
-  accidental: '(?:{{paren}})?(?:'')?(?:3{1,2}|2{1,2}|1)(?:{{paren}})?'
+  accidental: '(?:{{paren}}|{{bracket_open}})?(?:'')?(?:3{1,2}|2{1,2}|1)(?:{{paren}}|{{bracket_close}})?'
 ## Notes + Rests ################################
   eigth_128 : '[defghij]'
   quarter_64 : '[456789w]'
