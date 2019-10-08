@@ -32,6 +32,7 @@ variables:
   section: ({{number}}\s)(#{{lower_digit}}+\.?\-{{lower_digit}}+\.?)(?=\s)
   music_prefix: '''\.'
   staff_prefix: (_`|\$`|>`|\'`)
+  short_prefix: '`(?:{{char_de}}){,3}'
   clef: '(?:`(#|\|)(l|k)(#(h|\())?)'
   key: '[123]{1,3}|#{{digit}}[123]'
   c_time: '\$c|_c'  #"C" oder "Alla Breve"
@@ -159,6 +160,13 @@ contexts:
         2: keyword.control.staff_prefix.braille
         3: keyword.control.clef.braille
       push: inside_staff
+    #short prefix without staff_prefix
+    - match: '(?:({{short_prefix}})(?:\.))(?={{rest}}|{{octave}}|`)'
+      scope: keyword.control.staff.start.braille
+      captures:
+        1: storage.modifier.instrument.braille
+
+      push: inside_staff
 
   inside_staff:
     - meta_scope: sublimelinter.mark.error.staff.braille
@@ -192,7 +200,7 @@ contexts:
       # scope: constant.character.braille
       push: measure
     # exit staff condition
-    - match: (?=(\n)|(^\s\s))|('\.)
+    - match: (?=(\n)|(^\s\s{{staff_prefix}}|\s\s<;))|(?=^\s{4,}{{section}})|('\.)
       scope: constant.language.staff.end.braille
       pop: true
 
@@ -322,7 +330,7 @@ contexts:
         13: variable.note.finger.braille
         14: comment.slur_tie.braille
         15: string.quoted.glissando.braille
-        16: constant.numeric.interval.braille
+        16: meta.diff.interval.braille
         17: comment.fermate.braille
         18: comment.phrase.end.braille
         #12: markup.inserted.interval.accidental.braille
@@ -463,6 +471,6 @@ contexts:
     - match: '\(.*\)'
       scope: variable.lyrics.melisma.braille
  # exit condition: double space, not next verse
-    - match: (?=(^\s\s(?!#|\s\S))|('\.\S)|(?:\s\s{{section}}))
+    - match: (?=(^\s\s(?!#|\s\S))|{{short_prefix}}|('\.\S)|(?:\s\s{{section}}))
       scope: punctuation.definition.string.end.braille
       pop: true
